@@ -10,29 +10,39 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.foryourday.DdayRecyclerAdapter
 import com.cookandroid.foryourday.R
 import com.cookandroid.foryourday.calendar.CalendarView
+import com.cookandroid.foryourday.databinding.ViewpagerFirstFragmentBinding
 import java.util.*
 
 class FirstFragment: Fragment {
     private var dataset: ArrayList<ArrayList<String>>
+    private var _binding: ViewpagerFirstFragmentBinding? = null
+
+    private val binding get() = _binding!!
 
     constructor(dataSet: ArrayList<ArrayList<String>>){
         dataset = dataSet
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.viewpager_first_fragment, null)
-        return view
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = ViewpagerFirstFragmentBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val calendar = view.findViewById<CalendarView>(R.id.custom_calendar)
+        val calendar = binding.customCalendar
         val calInstance = Calendar.getInstance()
         calendar.updateCalendar(calInstance)
 
-        val dDayRecyclerView = view.findViewById<RecyclerView>(R.id.d_day_recyclerview)
+        val dDayRecyclerView = binding.dDayRecyclerview
         val dDayAdapter = DdayRecyclerAdapter(dataset)
         dDayRecyclerView.layoutManager = LinearLayoutManager(this.context)
         dDayRecyclerView.adapter = dDayAdapter
+
+        return root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
 }

@@ -10,8 +10,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
 import com.cookandroid.foryourday.databinding.ActivityMainBinding
-import com.cookandroid.foryourday.ui.add_todo.AddTodoFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,11 +27,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         binding.appBarMain.fab.setOnClickListener {
-            //add_todo_fragment로 이동!
-//            val addTodoFragment = AddTodoFragment()
-//            val fragmentTransaction = supportFragmentManager.beginTransaction()
-//            fragmentTransaction.replace(R.id.container, addTodoFragment)
-//            fragmentTransaction.commit()
+            Navigation.createNavigateOnClickListener(R.id.nav_add_todo, null)
         }
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
