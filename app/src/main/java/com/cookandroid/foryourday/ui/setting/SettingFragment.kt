@@ -1,4 +1,4 @@
-package com.cookandroid.foryourday.ui.slideshow
+package com.cookandroid.foryourday.ui.setting
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.cookandroid.foryourday.R
-import com.cookandroid.foryourday.databinding.FragmentSlideshowBinding
+import com.cookandroid.foryourday.databinding.FragmentSettingBinding
 
-class SlideshowFragment : Fragment() {
+class SettingFragment : Fragment() {
 
-    private lateinit var slideshowViewModel: SlideshowViewModel
-    private var _binding: FragmentSlideshowBinding? = null
+    private lateinit var settingViewModel: SettingViewModel
+    private var _binding: FragmentSettingBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,14 +24,14 @@ class SlideshowFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        slideshowViewModel =
-            ViewModelProvider(this).get(SlideshowViewModel::class.java)
+        settingViewModel =
+            ViewModelProvider(this).get(SettingViewModel::class.java)
 
-        _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner, Observer {
+        settingViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

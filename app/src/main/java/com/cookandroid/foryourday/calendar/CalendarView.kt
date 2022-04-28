@@ -1,13 +1,19 @@
 package com.cookandroid.foryourday.calendar
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
-import android.widget.GridView
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.view.View
+import android.widget.*
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import com.cookandroid.foryourday.R
+import com.cookandroid.foryourday.databinding.CustomCalendarBinding
+import com.cookandroid.foryourday.ui.add_todo.AddTodoViewModel
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -21,6 +27,7 @@ class CalendarView : LinearLayout {
     var months = arrayOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
     var month: Int = 0
     var year: Int = 0
+    lateinit var date: String
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
         initControl(context!!)
@@ -65,6 +72,14 @@ class CalendarView : LinearLayout {
 
         btn_nmonth.setOnClickListener {
             gotoNextMonth()
+        }
+
+        gridView.onItemClickListener = object : AdapterView.OnItemClickListener{
+            override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                val date = p0!!.getItemAtPosition(p2) as Date
+                val calendarViewModel = ViewModelProvider(findViewTreeViewModelStoreOwner()!!).get(CalendarViewModel::class.java)
+                calendarViewModel.updateDate(date)
+            }
         }
     }
 

@@ -20,4 +20,6 @@ class AddTodoViewModel : ViewModel() {
     fun updateToDoDate(date: String) {
         _text.value = date
     }
+
+    
 }

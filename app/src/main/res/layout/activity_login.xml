@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#EEEBEB"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"/>
+
+    <com.navercorp.nid.oauth.view.NidOAuthLoginButton
+        android:layout_marginTop="20dp"
+        android:id="@+id/buttonOAuthLoginImg"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"/>
+
+    <com.google.android.gms.common.SignInButton
+        android:layout_marginTop="10dp"
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonGoogleOAuth"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="처음이신가요?"
+        android:textStyle="bold"
+        android:id="@+id/text_sign_up"/>
+</LinearLayout>

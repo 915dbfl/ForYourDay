@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import com.cookandroid.foryourday.R
 import java.util.*
 
@@ -40,7 +41,9 @@ class CalendarAdapter(context: Context, days: ArrayList<Date>, inputMonth: Int):
         if(month != inputMonth || year != calToday.get(Calendar.YEAR)){
             view.setTextColor(Color.parseColor("#C4C4C4"))
         }
-        else if(day == calToday.get(Calendar.DATE)){
+        else if(day == calToday.get(Calendar.DATE)
+            && month == calToday.get(Calendar.MONTH)
+            && year == calToday.get(Calendar.YEAR)){
             view.setTextColor(Color.parseColor("#56a6a9"))
         }
 

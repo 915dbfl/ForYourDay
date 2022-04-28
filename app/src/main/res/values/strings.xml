@@ -9,5 +9,6 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_add_todo">Add To do</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_setting">Setting</string>
+    <string name="menu_add_category">Add Category</string>
 </resources>

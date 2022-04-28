@@ -3,7 +3,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <LinearLayout
         android:id="@+id/calendar_header"
         android:layout_width="match_parent"
@@ -34,7 +33,7 @@
             android:id="@+id/btn_bmonth"
             android:layout_width="15dp"
             android:layout_height="12dp"
-            android:src="@drawable/calendar_b_month"/>
+            android:src="@drawable/calendar_b_month" />
     </LinearLayout>
 
     <LinearLayout

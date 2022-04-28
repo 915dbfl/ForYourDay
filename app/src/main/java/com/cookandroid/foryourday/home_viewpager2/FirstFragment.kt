@@ -6,17 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.foryourday.DdayRecyclerAdapter
-import com.cookandroid.foryourday.R
-import com.cookandroid.foryourday.calendar.CalendarView
 import com.cookandroid.foryourday.databinding.ViewpagerFirstFragmentBinding
 import java.util.*
 
 class FirstFragment: Fragment {
     private var dataset: ArrayList<ArrayList<String>>
     private var _binding: ViewpagerFirstFragmentBinding? = null
-
     private val binding get() = _binding!!
 
     constructor(dataSet: ArrayList<ArrayList<String>>){
