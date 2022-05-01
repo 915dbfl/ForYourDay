@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -7,7 +7,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:layout_margin="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
             android:padding="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +30,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="카테고리를 추가해주세요!"/>
+
             <androidx.recyclerview.widget.RecyclerView
+                android:overScrollMode="never"
+                android:nestedScrollingEnabled="false"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,21 +41,56 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_add_category"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
-            android:padding="10dp"
+            android:id="@+id/layout_category_btns"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="+카테고리 추가하기"/>
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_delete_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:backgroundTint="@color/rectangle_layout"
+                android:background="@drawable/rectangle_layout"
+                android:text="삭제"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:visibility="gone"
+                android:id="@+id/btn_delete_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:backgroundTint="@color/rectangle_layout"
+                android:background="@drawable/rectangle_layout"
+                android:text="취소"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:visibility="gone"
+                android:id="@+id/btn_delete_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/rectangle_layout"
+                android:background="@drawable/rectangle_layout"
+                android:layout_marginRight="20dp"
+                android:text="삭제"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_add_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/rectangle_layout"
+                android:background="@drawable/rectangle_layout"
+                android:layout_marginRight="20dp"
+                android:text="추가"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
         <LinearLayout
             android:visibility="gone"
             android:layout_marginBottom="20dp"
@@ -82,6 +123,7 @@
                         android:layout_weight="8"
                         android:layout_height="60dp"
                         android:background="@drawable/rectangle_layout"
+                        android:backgroundTint="#e0e0e0"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
@@ -121,6 +163,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="8"
+                        android:paddingLeft="10dp"
                         android:background="@drawable/rectangle_layout"
                         android:backgroundTint="@android:color/white"
                         android:textSize="15sp" />
@@ -158,4 +201,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

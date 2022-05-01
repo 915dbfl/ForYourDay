@@ -1,19 +1,14 @@
 package com.cookandroid.foryourday.retrofit
 
-import android.graphics.Color
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiInterface {
     @GET("v1/categories")
     fun getCategories(
-        @Header("Authorization") value: String
-    ): Call<Categories>
+        @Header("Authorization") value: String): Call<Categories>
 
     @POST("v1/category")
     fun addCategory(
@@ -25,6 +20,11 @@ interface ApiInterface {
 
     @POST("v1/user")
     fun addUser(@Body userData: UserInfo): Call<UserData>
+
+    @DELETE("v1/category/{id}")
+    fun deleteCategory(
+        @Header("Authorization") value: String,
+        @Path("id") id: Int):Call<Void>
 
     companion object{
         var BASE_URL = "https://www.todo.youlhyuk.com"

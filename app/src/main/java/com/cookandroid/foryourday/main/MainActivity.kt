@@ -1,9 +1,9 @@
 package com.cookandroid.foryourday.main
 
-import android.graphics.Color
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.activity.viewModels
 import com.google.android.material.navigation.NavigationView
@@ -14,16 +14,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.cookandroid.foryourday.R
 import com.cookandroid.foryourday.databinding.ActivityMainBinding
-import com.cookandroid.foryourday.retrofit.ApiInterface
-import com.cookandroid.foryourday.retrofit.Categories
-import com.cookandroid.foryourday.retrofit.ColorData
 import com.cookandroid.foryourday.retrofit.UserData
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -56,22 +49,27 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_add_todo, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_add_todo, R.id.nav_slideshow, R.id.nav_add_category
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        menuInflater.inflate(R.menu.main, menu)
+//        return true
+//    }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+        return super.dispatchTouchEvent(ev)
+    }
 }

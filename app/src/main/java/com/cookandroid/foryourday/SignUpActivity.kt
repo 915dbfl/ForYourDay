@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.cookandroid.foryourday.databinding.ActivitySignUpBinding
@@ -104,6 +105,7 @@ class SignUpActivity : AppCompatActivity() {
             userInfo.userName = binding.edtUserName.text.toString()
             binding.checkUser.isChecked = true
             binding.layoutGetName.visibility = View.GONE
+            binding.edtUserName.hideKeyBoard()
         }
 
         binding.btnHome.setOnClickListener {
@@ -145,7 +147,6 @@ class SignUpActivity : AppCompatActivity() {
                         oauthInfo.accessToken = response.body()!!.oauth.accessToken
                         oauthInfo.refreshToken = response.body()!!.oauth.refreshToken
                         addUserInfo()
-                        checkInfo()
                         Toast.makeText(context, "${userInfo.userName}님! 회원가입에 성공하셨습니다!☺", Toast.LENGTH_SHORT).show()
                     }else{
                         if(response.code() in 400..500){
@@ -176,24 +177,8 @@ class SignUpActivity : AppCompatActivity() {
         helper.writableDatabase.close()
     }
 
-    //확인용
-    private fun checkInfo(){
-        val helper = DBHelper(context)
-
-        val sql = "select * from UserTable where userId = ${userInfo.userId}"
-        val c1 = helper.writableDatabase.rawQuery(sql, null)
-
-        while(c1.moveToNext()){
-            val idx_token = c1.getColumnIndex("accessToken")
-            val idx_refresh = c1.getColumnIndex("refreshToken")
-            val idx_userName = c1.getColumnIndex("userName")
-            val token = c1.getString(idx_token)
-            val refresh = c1.getString(idx_refresh)
-            val userName = c1.getString(idx_userName)
-
-            Log.d("result", "refresh: $refresh")
-            Log.d("result", "token: $token")
-            Log.d("result", "userName: $userName")
-        }
+    private fun View.hideKeyBoard(){
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 }

@@ -1,19 +1,13 @@
 package com.cookandroid.foryourday.calendar
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import com.cookandroid.foryourday.R
-import com.cookandroid.foryourday.databinding.CustomCalendarBinding
-import com.cookandroid.foryourday.ui.add_todo.AddTodoViewModel
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -65,6 +59,7 @@ class CalendarView : LinearLayout {
         btn_bmonth = findViewById(R.id.btn_bmonth)
         btn_nmonth = findViewById(R.id.btn_nmonth)
         layout_header = findViewById(R.id.calendar_header)
+
 
         btn_bmonth.setOnClickListener {
             gotoPastMonth()

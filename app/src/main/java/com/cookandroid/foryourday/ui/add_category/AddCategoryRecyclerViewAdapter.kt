@@ -2,7 +2,6 @@ package com.cookandroid.foryourday.ui.add_category
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,31 +10,42 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.foryourday.R
 import com.cookandroid.foryourday.retrofit.ColorData
 
-class AddCategoryRecyclerViewAdapter(private var dataSet: List<ColorData>, context: Context)
+class AddCategoryRecyclerViewAdapter(private var dataSet: List<ColorData>, context: Context, private var delete: Boolean)
     : RecyclerView.Adapter<AddCategoryRecyclerViewAdapter.ViewHolder>() {
-    private val context = context
+    var selectedList = arrayListOf<Int>()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val textView: TextView
         val categoryColor: LinearLayout
-        val radioButton: RadioButton
+        val categoryCheckBox: CheckBox
 
         init {
-            textView = view.findViewById(R.id.category_item)
+            textView = view.findViewById(R.id.todo_item_content)
             categoryColor = view.findViewById(R.id.category_color)
-            radioButton = view.findViewById(R.id.category_radio_btn)
-            radioButton.visibility = View.GONE
-
+            categoryCheckBox = view.findViewById(R.id.todo_item_checkbox)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.radio_btn_recyclerview, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.todo_recyclerview_item, parent, false)
         return ViewHolder(view)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (!delete){
+            holder.categoryCheckBox.visibility = View.GONE
+        }else{
+            holder.categoryCheckBox.visibility = View.VISIBLE
+            holder.categoryCheckBox.isChecked = false
+        }
+        holder.categoryCheckBox.setOnCheckedChangeListener { _, b ->
+            if (b){
+                selectedList.add(dataSet[position].id!!)
+            }else{
+                selectedList.remove(dataSet[position].id!!)
+            }
+        }
         val title = dataSet[position].title
         val value = dataSet[position].value
         holder.textView.text = title
@@ -44,9 +54,12 @@ class AddCategoryRecyclerViewAdapter(private var dataSet: List<ColorData>, conte
 
     override fun getItemCount() = dataSet.size
 
-    fun setData(newData: List<ColorData>){
-        dataSet = newData
-        Log.d("dataset", dataSet.toString())
+    fun setValue(newData: List<ColorData>?, newDalete: Boolean){
+        if(newData != null){
+            dataSet = newData
+        }
+        delete = newDalete
         notifyDataSetChanged()
     }
+
 }

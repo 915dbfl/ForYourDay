@@ -13,12 +13,12 @@ import retrofit2.Response
 
 class MainViewModel() : ViewModel(){
     private val _data = MutableLiveData<UserData>()
-    private val _categories = MutableLiveData<List<ColorData>?>()
+    private val _categories = MutableLiveData<List<ColorData>>()
 
     val data: LiveData<UserData> = _data
-    var categories: LiveData<List<ColorData>?> = _categories
+    var categories: LiveData<List<ColorData>> = _categories
 
-    fun setCategories(categories: List<ColorData>?){
+    fun setCategories(categories: List<ColorData>){
         _categories.value = categories
     }
 
@@ -26,17 +26,18 @@ class MainViewModel() : ViewModel(){
         _data.value = userData
     }
 
+    fun getAuthorization(): String{
+        return "bearerToken ${data.value!!.oauth.accessToken}"
+    }
+
     fun updateCategories(){
-        val accessToken = data.value!!.oauth.accessToken
-        val header = "bare $accessToken"
-        ApiInterface.create().getCategories(header).enqueue(
+        ApiInterface.create().getCategories(getAuthorization()).enqueue(
             object : retrofit2.Callback<Categories> {
                 override fun onResponse(call: Call<Categories>, response: Response<Categories>) {
                     if(response.isSuccessful){
                         setCategories(response.body()!!.categories)
                     }
                 }
-
                 override fun onFailure(call: Call<Categories>, t: Throwable) {
                     Log.d("getUserCategoriesGetApi", "error: ${t.toString()}")
                 }

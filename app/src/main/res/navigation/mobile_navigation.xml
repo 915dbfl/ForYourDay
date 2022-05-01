@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/nav_add_category"
+        android:name="com.cookandroid.foryourday.ui.add_category.AddCategoryFragment"
+        android:label="@string/menu_add_category"
+        tools:layout="@layout/fragment_add_category" />
+
+    <fragment
         android:id="@+id/nav_add_todo"
         android:name="com.cookandroid.foryourday.ui.add_todo.AddTodoFragment"
         android:label="@string/menu_add_todo"
@@ -21,11 +27,5 @@
         android:id="@+id/nav_setting"
         android:name="com.cookandroid.foryourday.ui.setting.SettingFragment"
         android:label="@string/menu_setting"
-        tools:layout="@layout/fragment_setting" />
-
-    <fragment
-        android:id="@+id/nav_add_category"
-        android:name="com.cookandroid.foryourday.ui.add_category.AddCategoryFragment"
-        android:label="@string/menu_add_category"
         tools:layout="@layout/fragment_setting" />
 </navigation>

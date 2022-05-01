@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_menu_home"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/nav_add_category"
+            android:icon="@drawable/ic_baseline_color_lens_24"
+            android:title="@string/menu_add_category" />
+        <item
             android:id="@+id/nav_add_todo"
             android:icon="@drawable/ic_menu_add_todo"
             android:title="@string/menu_add_todo" />
@@ -16,9 +20,5 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="@string/menu_setting" />
-        <item
-            android:id="@+id/nav_add_category"
-            android:icon="@drawable/ic_baseline_color_lens_24"
-            android:title="@string/menu_add_category" />
     </group>
 </menu>

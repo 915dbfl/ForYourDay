@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.foryourday.R
+import com.cookandroid.foryourday.retrofit.ColorData
 
-class AddToDoRecyclerViewAdapter(private val dataSet: HashMap<String, String>, context: Context)
+class AddToDoRecyclerViewAdapter(private val dataSet: List<ColorData>, context: Context)
     : RecyclerView.Adapter<AddToDoRecyclerViewAdapter.ViewHolder>() {
-    private val context = context
     var selelctedPosition = -1
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
@@ -39,9 +39,10 @@ class AddToDoRecyclerViewAdapter(private val dataSet: HashMap<String, String>, c
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val key = dataSet.keys.elementAt(position)
-        holder.textView.text = key
-        holder.categoryColor.setBackgroundColor(Color.parseColor(dataSet[key]))
+        val title = dataSet[position].title
+        val value = dataSet[position].value
+        holder.textView.text = title
+        holder.categoryColor.setBackgroundColor(Color.parseColor(value))
         holder.radioButton.isChecked = (position == selelctedPosition)
     }
 

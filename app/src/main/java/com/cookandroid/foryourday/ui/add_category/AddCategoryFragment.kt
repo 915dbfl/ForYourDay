@@ -1,19 +1,15 @@
 package com.cookandroid.foryourday.ui.add_category
 
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,23 +17,23 @@ import com.cookandroid.foryourday.databinding.FragmentAddCategoryBinding
 import com.cookandroid.foryourday.main.MainViewModel
 import com.cookandroid.foryourday.retrofit.ApiInterface
 import com.cookandroid.foryourday.retrofit.ColorData
-import com.cookandroid.foryourday.ui.add_todo.AddToDoRecyclerViewAdapter
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorSwatch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 
-class AddCategoryFragment : Fragment(){
+class AddCategoryFragment : androidx.fragment.app.Fragment(){
     private var _binding: FragmentAddCategoryBinding? = null
     private val binding get() = _binding!!
     private var layoutChosenColor: LinearLayout? = null
     private var layoutCreateCategory: LinearLayout? = null
-    private var layoutAddCategory: LinearLayout? = null
-    private var colorString: String? = null
+    private var layoutCategoryBtns: LinearLayout? = null
+    private var colorString: String = "#e0e0e0"
     private var mainViewModel: MainViewModel? = null
     private var addCategoryRecyclerViewAdapter: AddCategoryRecyclerViewAdapter? = null
-    private var edtCategoryName: EditText? = null
+    private var btnDeleteComplete: AppCompatButton? = null
+    private var btnDeleteCancel: AppCompatButton? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddCategoryBinding.inflate(inflater, container, false)
@@ -50,8 +46,12 @@ class AddCategoryFragment : Fragment(){
 
         layoutChosenColor = binding.layoutChosenColor
         layoutCreateCategory = binding.layoutCreateCategory
-        layoutAddCategory = binding.layoutAddCategory
-        edtCategoryName = binding.edtCategoryName
+        layoutCategoryBtns = binding.layoutCategoryBtns
+        btnDeleteComplete = binding.btnDeleteComplete
+        btnDeleteCancel = binding.btnDeleteCancel
+        val btnDeleteCategory = binding.btnDeleteCategory
+        val btnAddCategory = binding.btnAddCategory
+        val edtCategoryName = binding.edtCategoryName
         val addCategoryMessage = binding.addCategoryMessage
         val categoryRecyclerview = binding.categoryRecyclerview
         val btnColorPicker = binding.btnColorPicker
@@ -59,28 +59,55 @@ class AddCategoryFragment : Fragment(){
         val btnCreateCategory = binding.btnCreateCategory
         val categories = mainViewModel!!.categories.value
 
+        addCategoryRecyclerViewAdapter = AddCategoryRecyclerViewAdapter(categories!! , context!!, false)
+        categoryRecyclerview.layoutManager = LinearLayoutManager(context)
+        categoryRecyclerview.adapter = addCategoryRecyclerViewAdapter
+
+        if(categories.isEmpty()){
+            addCategoryMessage.visibility = View.VISIBLE
+            btnDeleteCategory.visibility = View.GONE
+        }
+
         mainViewModel!!.categories.observe(requireActivity(), Observer{
-            if (addCategoryRecyclerViewAdapter != null){
-                addCategoryRecyclerViewAdapter!!.setData(it!!)
-                addCategoryMessage.visibility = View.INVISIBLE
-            }else{
+            addCategoryRecyclerViewAdapter!!.setValue(it!!,false)
+            if (it.isEmpty()){
                 addCategoryMessage.visibility = View.VISIBLE
+                btnAddCategory.visibility = View.VISIBLE
+                btnDeleteCategory.visibility = View.GONE
+            }else{
+                btnDeleteCategory.visibility = View.VISIBLE
+                btnAddCategory.visibility = View.VISIBLE
+                addCategoryMessage.visibility = View.GONE
             }
         })
 
-        if(categories != null){
-            addCategoryRecyclerViewAdapter = AddCategoryRecyclerViewAdapter(categories , context!!)
-            categoryRecyclerview.layoutManager = LinearLayoutManager(context)
-            categoryRecyclerview.adapter = addCategoryRecyclerViewAdapter
+        btnDeleteCategory.setOnClickListener {
+            btnAddCategory.visibility = View.GONE
+            btnDeleteCategory.visibility = View.GONE
+            btnDeleteComplete!!.visibility = View.VISIBLE
+            btnDeleteCancel!!.visibility = View.VISIBLE
+            addCategoryRecyclerViewAdapter!!.setValue(null, true)
         }
 
-        layoutAddCategory!!.setOnClickListener {
+        btnDeleteCancel!!.setOnClickListener {
+            btnAddCategory.visibility = View.VISIBLE
+            btnDeleteCategory.visibility = View.VISIBLE
+            btnDeleteComplete!!.visibility = View.GONE
+            btnDeleteCancel!!.visibility = View.GONE
+            addCategoryRecyclerViewAdapter!!.setValue(null, false)
+        }
+
+        btnDeleteComplete!!.setOnClickListener {
+            deleteApi()
+        }
+
+        btnAddCategory.setOnClickListener {
             layoutCreateCategory!!.visibility = View.VISIBLE
-            layoutAddCategory!!.visibility = View.GONE
+            layoutCategoryBtns!!.visibility = View.GONE
         }
 
         btnCancelCreate.setOnClickListener {
-            layoutAddCategory!!.visibility = View.VISIBLE
+            layoutCategoryBtns!!.visibility = View.VISIBLE
             layoutCreateCategory!!.visibility = View.GONE
         }
 
@@ -89,8 +116,13 @@ class AddCategoryFragment : Fragment(){
         }
 
         btnCreateCategory.setOnClickListener {
-            val colorData = ColorData(edtCategoryName!!.text.toString(), colorString!!)
-            postApi(colorData)
+            if(edtCategoryName.text.toString().replace(" ", "") != ""){
+                val colorData = ColorData(edtCategoryName.text.toString(), colorString, null)
+                postApi(colorData)
+                edtCategoryName.text.clear()
+            }else{
+                Toast.makeText(context, "카테고리 이름을 설정해주세요!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -105,19 +137,46 @@ class AddCategoryFragment : Fragment(){
             }.show()
     }
 
-    private fun postApi(colorData: ColorData){
-        val accessToken = mainViewModel!!.data.value!!.oauth.accessToken
-        val header = "bare $accessToken"
+    private fun deleteApi(){
+        val list = addCategoryRecyclerViewAdapter!!.selectedList
+        val lastValue = list.get(list.size -1)
+        for(id in list){
+            ApiInterface.create().deleteCategory(mainViewModel!!.getAuthorization(), id).enqueue(
+                object : retrofit2.Callback<Void>{
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if(response.isSuccessful){
+                            Log.d("deleteCategory", "id 카테고리가 삭제되었습니다.")
+                            if (id == lastValue){
+                                Toast.makeText(context, "삭제가 완료되었습니다!", Toast.LENGTH_SHORT).show()
+                                btnDeleteComplete!!.visibility = View.GONE
+                                btnDeleteCancel!!.visibility = View.GONE
+                                mainViewModel!!.updateCategories()
+                            }
+                        }else{
+                            if(response.code() in 400..500){
+                                val jOBjectError = JSONObject(response.errorBody()!!.charStream().readText())
+                                Log.d("deleteCategory", jOBjectError.getJSONArray("errors").getJSONObject(0).getString("message"))
+                            }
+                        }
+                    }
 
-        ApiInterface.create().addCategory(header, colorData).enqueue(
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("deleteCategory", "error: ${t.toString()}")
+                    }
+                }
+            )
+        }
+    }
+
+    private fun postApi(colorData: ColorData){
+        ApiInterface.create().addCategory(mainViewModel!!.getAuthorization(), colorData).enqueue(
             object : retrofit2.Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if(response.isSuccessful){
                         Toast.makeText(context, "카테고리가 생성되었습니다!☺", Toast.LENGTH_SHORT).show()
                         mainViewModel!!.updateCategories()
                         layoutCreateCategory!!.visibility = View.GONE
-                        layoutAddCategory!!.visibility = View.VISIBLE
-                        edtCategoryName!!.hideKeyBoard()
+                        layoutCategoryBtns!!.visibility = View.VISIBLE
                     }else{
                         if (response.code() in 400..500){
                             val jOBjectError = JSONObject(response.errorBody()!!.charStream().readText())
@@ -132,10 +191,5 @@ class AddCategoryFragment : Fragment(){
                 }
             }
         )
-    }
-
-    private fun View.hideKeyBoard(){
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 }
