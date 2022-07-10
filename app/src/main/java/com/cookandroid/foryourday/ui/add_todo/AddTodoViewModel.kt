@@ -3,7 +3,6 @@ package com.cookandroid.foryourday.ui.add_todo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTodoViewModel : ViewModel() {
@@ -20,6 +19,4 @@ class AddTodoViewModel : ViewModel() {
     fun updateToDoDate(date: String) {
         _text.value = date
     }
-
-    
 }

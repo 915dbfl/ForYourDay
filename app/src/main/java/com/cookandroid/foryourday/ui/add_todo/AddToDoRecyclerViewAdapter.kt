@@ -1,6 +1,5 @@
 package com.cookandroid.foryourday.ui.add_todo
 
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -8,24 +7,20 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.foryourday.R
-import com.cookandroid.foryourday.retrofit.ColorData
+import com.cookandroid.foryourday.retrofit.CategoryData
 
-class AddToDoRecyclerViewAdapter(private val dataSet: List<ColorData>, context: Context)
+class AddToDoRecyclerViewAdapter(private val dataSet: List<CategoryData>)
     : RecyclerView.Adapter<AddToDoRecyclerViewAdapter.ViewHolder>() {
-    var selelctedPosition = -1
+    var selectedCategoryId = -1
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        val textView: TextView
-        val categoryColor: LinearLayout
-        val radioButton: RadioButton
+        val textView: TextView = view.findViewById(R.id.category_item)
+        val categoryColor: LinearLayout = view.findViewById(R.id.category_color)
+        val radioButton: RadioButton = view.findViewById(R.id.category_radio_btn)
 
         init {
-            textView = view.findViewById(R.id.category_item)
-            categoryColor = view.findViewById(R.id.category_color)
-            radioButton = view.findViewById(R.id.category_radio_btn)
-
             radioButton.setOnClickListener {
-                selelctedPosition = absoluteAdapterPosition
+                selectedCategoryId = dataSet[absoluteAdapterPosition].id!!
                 notifyDataSetChanged()
             }
         }
@@ -43,8 +38,12 @@ class AddToDoRecyclerViewAdapter(private val dataSet: List<ColorData>, context: 
         val value = dataSet[position].value
         holder.textView.text = title
         holder.categoryColor.setBackgroundColor(Color.parseColor(value))
-        holder.radioButton.isChecked = (position == selelctedPosition)
+        holder.radioButton.isChecked = dataSet[position].id == selectedCategoryId
+//        if(dataSet[position].id == selectedCategoryId){
+//            selectedCategoryId = dataSet[position].id!!
+//        }
     }
 
     override fun getItemCount() = dataSet.size
+
 }

@@ -1,71 +1,107 @@
 package com.cookandroid.foryourday.ui.add_todo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.foryourday.R
+import com.cookandroid.foryourday.calendar.CalendarView
 import com.cookandroid.foryourday.calendar.CalendarViewModel
 import com.cookandroid.foryourday.databinding.FragmentAddTodoBinding
-import com.cookandroid.foryourday.main.MainViewModel
+import com.cookandroid.foryourday.retrofit.*
+import com.cookandroid.foryourday.sqlite.SQLite
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTodoFragment :androidx.fragment.app.Fragment() {
-
-    private lateinit var addTodoViewModel: AddTodoViewModel
-    private lateinit var calendarViewModel: CalendarViewModel
+    private val addTodoViewModel: AddTodoViewModel by activityViewModels()
+    private val calendarViewModel: CalendarViewModel by activityViewModels()
+    private lateinit var categoryRecyclerViewAdapter: AddToDoRecyclerViewAdapter
     private var _binding: FragmentAddTodoBinding? = null
-
+    private var dateData: Date? = null
+    private lateinit var cal: CalendarView
     private val binding get() = _binding!!
+    private var modifyData: ToDoData? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddTodoBinding.inflate(inflater, container, false)
+
+        modifyData = arguments?.getSerializable("modifyTodo") as ToDoData?
+        val calInstance = Calendar.getInstance()
+        cal = binding.addTodoCal
+        cal.setIsPicker(1)
+        cal.setCalendarViewModel(calendarViewModel)
+        cal.updateCalendar(calInstance, calInstance.time)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addTodoViewModel = ViewModelProvider(this).get(AddTodoViewModel::class.java)
-        calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
-
-        val cal = binding.addTodoCal
         val todoDate = binding.textviewTodoDate
         val btnComplete = binding.btnAddTodoComplete
+        val btnModifyToDo = binding.btnModifyTodo
         val btnCancel = binding.btnAddTodoCancel
         val categoryRecycler = binding.categoryRecyclerview
         val textViewAddCategory = binding.textviewAddCategory
+        val edtTodoLabel = binding.edtTodoLabel
+        val sqlite = SQLite(context!!)
 
-        val calInstance = Calendar.getInstance()
-        cal.updateCalendar(calInstance)
+        CoroutineScope(Dispatchers.Main).launch {
+            val categories = sqlite.getCategories().await()
 
-        val mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        val categories = mainViewModel.categories.value
+            categoryRecyclerViewAdapter = AddToDoRecyclerViewAdapter(categories)
+            categoryRecycler.layoutManager = LinearLayoutManager(context)
+            categoryRecycler.adapter = categoryRecyclerViewAdapter
 
-        val categoryRecyclerViewAdapter = AddToDoRecyclerViewAdapter(mainViewModel.categories.value!!, context!!)
-        categoryRecycler.layoutManager = LinearLayoutManager(context)
-        categoryRecycler.adapter = categoryRecyclerViewAdapter
+            if(categories.isEmpty()){
+                textViewAddCategory.visibility = View.VISIBLE
+            }
 
-        if(categories!!.isEmpty()){
-            textViewAddCategory.visibility = View.VISIBLE
+            if (modifyData != null){
+                btnComplete.visibility = View.GONE
+                btnModifyToDo.visibility = View.VISIBLE
+                calendarViewModel.updatePickerDate(Date(modifyData!!.date))
+                edtTodoLabel.setText(modifyData!!.content)
+                categoryRecyclerViewAdapter.selectedCategoryId = modifyData!!.categoryId
+                categoryRecyclerViewAdapter.notifyDataSetChanged()
+            }
         }
 
-        calendarViewModel.date.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            val date = SimpleDateFormat("yyyy.M.dd").format(it)
+        calendarViewModel.pickerDate.observe(viewLifecycleOwner, {
+            dateData = it
+            val date = SimpleDateFormat("yyyy.M.dd", Locale.getDefault()).format(it)
             addTodoViewModel.updateToDoDate(date)
         })
 
-        addTodoViewModel.text.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        addTodoViewModel.text.observe(viewLifecycleOwner, {
             todoDate.text = it
         })
 
         btnComplete.setOnClickListener {
-            //데이터베이스에 값 추가!
-            it.findNavController().navigate(R.id.nav_home)
+            val date = dateData!!.time
+            val label = edtTodoLabel.text.toString()
+            if (label.replace(" ", "") == ""){
+                Toast.makeText(context, "투두 이름을 설정해주세요!", Toast.LENGTH_SHORT).show()
+            }else{
+                val todoData = ToDoData(null, false, label, date, categoryRecyclerViewAdapter.selectedCategoryId)
+                CoroutineScope(Dispatchers.Default).launch {
+                    postApi(todoData)
+                }
+                it.findNavController().navigate(R.id.nav_home)
+            }
         }
 
         btnCancel.setOnClickListener {
@@ -76,11 +112,71 @@ class AddTodoFragment :androidx.fragment.app.Fragment() {
             it.findNavController().navigate(R.id.nav_add_category)
         }
 
-
+        btnModifyToDo.setOnClickListener {
+            val date = dateData!!.time
+            val todoData = ToDoData(modifyData!!.id, modifyData!!.complete, edtTodoLabel.text.toString(), date, categoryRecyclerViewAdapter.selectedCategoryId)
+            CoroutineScope(Dispatchers.Default).launch {
+                patchApi(todoData)
+            }
+            it.findNavController().navigate(R.id.nav_home)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private suspend fun patchApi(todoData: ToDoData){
+        val sqlite = SQLite(context!!)
+        val header = "bearerToken ${sqlite.getUserInfo().await().oauth.accessToken}"
+        ApiInterface.create().patchTodo(header, todoData.id!!, todoData).enqueue(
+            object : retrofit2.Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if(response.isSuccessful){
+                        CoroutineScope(Dispatchers.Main).launch {
+                            sqlite.patchTodoDB(todoData)
+                            Toast.makeText(context, "수정이 완료되었습니다!🤗", Toast.LENGTH_SHORT).show()
+                        }
+                    }else{
+                        if(response.code() in 400..500){
+                            val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
+                            Log.d("patchTodoApi", jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"))
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("patchTodoApi", "error: $t")
+                }
+            }
+        )
+    }
+
+    private suspend fun postApi(todoData: ToDoData){
+        val sqlite = SQLite(context!!)
+        val header = "bearerToken ${sqlite.getUserInfo().await().oauth.accessToken}"
+        ApiInterface.create().addTodo(header, todoData).enqueue(
+            object : retrofit2.Callback<ToDo>{
+                override fun onResponse(call: Call<ToDo>, response: Response<ToDo>) {
+                    if(response.isSuccessful){
+                        CoroutineScope(Dispatchers.Default).launch {
+                            Log.d("투두 추가", response.body()!!.todo.toString())
+                            sqlite.addTodoDB(response.body()!!.todo)
+                        }
+                        Toast.makeText(context, "투두가 추가되었습니다!.😊", Toast.LENGTH_SHORT).show()
+                    }else{
+                        if(response.code() in 400..500){
+                            val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ToDo>, t: Throwable) {
+                    Log.d("todoPostApi", "error: $t")
+                }
+            }
+        )
     }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/rectangle_layout"
+    android:backgroundTint="@color/rectangle_layout"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:padding = "30dp"
+    android:layout_height="wrap_content">
+    <TextView
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:text="🖐️잠시만요!"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/delete_user_message"/>
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_layout"
+            android:text="네!"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/btn_delete"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아니요!"
+            android:background="@drawable/rectangle_layout"
+            android:id="@+id/btn_cancel"/>
+    </LinearLayout>
+
+</LinearLayout>

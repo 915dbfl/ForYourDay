@@ -8,7 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="floating_button">#EEEBEB</color>
     <color name="calendar_layout">#B3B3B3</color>
     <color name="category_important">#E29393</color>
     <color name="category_routine">#73A075</color>

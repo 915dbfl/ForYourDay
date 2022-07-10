@@ -8,8 +8,8 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginBottom="10dp"
             android:padding="20dp"
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 android:id="@+id/btn_delete_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:backgroundTint="@color/rectangle_layout"
                 android:background="@drawable/rectangle_layout"
                 android:text="삭제"
@@ -63,7 +63,7 @@
                 android:id="@+id/btn_delete_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:backgroundTint="@color/rectangle_layout"
                 android:background="@drawable/rectangle_layout"
                 android:text="취소"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/rectangle_layout"
                 android:background="@drawable/rectangle_layout"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:text="삭제"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/rectangle_layout"
                 android:background="@drawable/rectangle_layout"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:text="추가"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -100,8 +100,8 @@
             android:orientation="vertical">
             <LinearLayout
                 android:padding="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/rectangle_layout"
@@ -134,7 +134,7 @@
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:layout_width="0dp"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:background="@drawable/rectangle_layout"
@@ -154,16 +154,20 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:gravity="center"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:text="이름"
                         android:textSize="15sp"
                         android:textStyle="bold" />
                     <EditText
+                        android:hint="ex) 루틴"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
                         android:id="@+id/edt_category_name"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="8"
-                        android:paddingLeft="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp"
                         android:background="@drawable/rectangle_layout"
                         android:backgroundTint="@android:color/white"
                         android:textSize="15sp" />
@@ -182,7 +186,7 @@
                     android:id="@+id/btn_cancel_create"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="20dp"
                     android:background="@drawable/rectangle_layout"
                     android:backgroundTint="@color/rectangle_layout"
                     android:text="취소"

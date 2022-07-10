@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/rectangle_layout"
+    android:backgroundTint="@color/rectangle_layout"
+    android:orientation="vertical"
+    android:padding="25dp"
+    android:gravity="center_horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="15sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="🔧 사용자 이미지 변경"
+        android:layout_marginBottom="15dp"/>
+    <androidx.cardview.widget.CardView
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        app:cardCornerRadius="45dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@android:color/transparent">
+        <ImageView
+            android:contentDescription="user image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:id="@+id/user_img"/>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_layout"
+            android:text="이미지 변경"
+            android:gravity="center"
+            android:padding="3dp"
+            android:id="@+id/select_user_img"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="원본 이미지"
+            android:padding="3dp"
+            android:gravity="center"
+            android:background="@drawable/rectangle_layout"
+            android:id="@+id/select_default_img"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_layout"
+            android:backgroundTint="@color/white"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/btn_user_img_change_cancel"
+            android:text="취소"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_layout"
+            android:backgroundTint="@color/white"
+            android:text="완료"
+            android:id="@+id/btn_user_img_change"/>
+    </LinearLayout>
+</LinearLayout>

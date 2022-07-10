@@ -1,4 +1,4 @@
-package com.cookandroid.foryourday
+package com.cookandroid.foryourday.login
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.cookandroid.foryourday.BuildConfig
+import com.cookandroid.foryourday.SignUpActivity
 import com.cookandroid.foryourday.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
@@ -19,6 +21,11 @@ import retrofit2.Call
 import retrofit2.Response
 import com.cookandroid.foryourday.main.MainActivity
 import com.cookandroid.foryourday.retrofit.*
+import com.cookandroid.foryourday.sqlite.SQLite
+import com.cookandroid.foryourday.sqlite.UserInfoDBHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 
@@ -33,20 +40,27 @@ class LoginActivity: AppCompatActivity() {
     private lateinit var gso: GoogleSignInOptions
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
-    private var userInfo = UserInfo(null, null, null)
-    private var oauthInfo = OAuthInfo(null, null)
+    private var userInfo = UserInfo(null, null, null,  null)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
+        context = this
+
         setContentView(binding.root)
-        init()
+        val userName = checkLogin()
+        if(userName != null){
+            val mainIntent = Intent(context, MainActivity::class.java)
+            startActivity(mainIntent)
+            Toast.makeText(context, "${userName}님! 반갑습니다! 🤗", Toast.LENGTH_SHORT).show()
+        }else{
+            init()
+        }
     }
 
     private fun init(){
-        context = this
         clientId = BuildConfig.CLINET_ID
         clientSecret = BuildConfig.CLIENT_SECRET
 
@@ -77,7 +91,7 @@ class LoginActivity: AppCompatActivity() {
                     }
 
                     override fun onFailure(httpStatus: Int, message: String) {
-                        Log.d("callProfileApi", "errorCode: ${httpStatus.toString()}")
+                        Log.d("callProfileApi", "errorCode: $httpStatus")
                     }
 
                     override fun onSuccess(result: NidProfileResponse) {
@@ -120,19 +134,22 @@ class LoginActivity: AppCompatActivity() {
             userInfo.email = account.email
             checkUser()
         }catch (e: ApiException){
-            Log.d("handleSignInResult", "errorCode: ${e.statusCode}")
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun checkUser(){
+        val sqlite = SQLite(context)
         ApiInterface.create().checkUser(userInfo).enqueue(
             object : retrofit2.Callback<UserData>{
                 override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
                     if(response.isSuccessful){
-                        userInfo = response.body()!!.user
-                        oauthInfo = response.body()!!.oauth
-                        val data = UserData(oauthInfo, userInfo)
-                        gotoMain(data)
+                        CoroutineScope(Dispatchers.Default).launch {
+                            makeUserDB(response)
+                            sqlite.makeCategoriesDB(response.body()!!.oauth.accessToken!!)
+                            sqlite.makeTodoDB(response.body()!!.oauth.accessToken!!)
+                            sqlite.makeDDayDB(response.body()!!)
+                        }
                     }else{
                         if(response.code() in 400..500){
                             val jObjError = JSONObject(response.errorBody()!!.charStream().readText())
@@ -142,16 +159,37 @@ class LoginActivity: AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<UserData>, t: Throwable) {
-                    Log.d("postApi", "error: ${t.toString()}")
+                    Log.d("postApi", "error: $t")
                 }
             }
         )
     }
 
-    private fun gotoMain(userData: UserData){
-        val mainIntent = Intent(context, MainActivity::class.java)
-        mainIntent.putExtra("data", userData)
-        startActivity(mainIntent)
-        Toast.makeText(context, "${userData.user.userName}님! 반갑습니다!", Toast.LENGTH_SHORT).show()
+    private fun makeUserDB(res: Response<UserData>){
+        val helper = UserInfoDBHelper(context)
+        val sql = """
+            insert into UserTable (userId, email, userName, imagePath, accessToken, refreshToken) 
+            values(?, ?, ?, ?, ?, ?)
+        """.trimIndent()
+        val arg = arrayOf(res.body()!!.user.userId, res.body()!!.user.email, res.body()!!.user.userName, res.body()!!.user.imagePath, res.body()!!.oauth.accessToken, res.body()!!.oauth.refreshToken)
+
+        helper.writableDatabase.execSQL(sql, arg)
+        helper.writableDatabase.close()
+    }
+
+    private fun checkLogin(): String?{
+        val helper = UserInfoDBHelper(context)
+        val sql = "select * from UserTable"
+        val cur = helper.writableDatabase.rawQuery(sql, null)
+        return if (cur.count > 0) {
+            cur.moveToFirst()
+            val idx1 = cur.getColumnIndex("userName")
+            val result = cur.getString(idx1)
+            cur.close()
+            result
+        } else {
+            cur.close()
+            null
+        }
     }
 }

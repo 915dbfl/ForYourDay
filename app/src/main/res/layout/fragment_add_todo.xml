@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.cookandroid.foryourday.calendar.CalendarView
-        android:id="@+id/add_todo_cal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"/>
 
     <androidx.core.widget.NestedScrollView
-        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:clickable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <com.cookandroid.foryourday.calendar.CalendarView
+                android:id="@+id/add_todo_cal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"/>
 
             <LinearLayout
                 android:id="@+id/linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical">
@@ -41,15 +39,15 @@
                     android:backgroundTint="@color/rectangle_layout"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="5dp"
-                    android:paddingLeft="20dp">
+                    android:padding="5dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:gravity="center"
-                        android:paddingRight="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="0dp"
                         android:text="날짜"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -61,7 +59,8 @@
                         android:layout_weight="8"
                         android:background="@drawable/rectangle_layout"
                         android:backgroundTint="@android:color/white"
-                        android:paddingLeft="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp"
                         android:textSize="15sp" />
                 </LinearLayout>
 
@@ -80,19 +79,23 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:gravity="center"
-                        android:paddingRight="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="0dp"
                         android:text="레이블"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <EditText
+                        android:importantForAutofill="no"
+                        android:inputType="text"
                         android:id="@+id/edt_todo_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="8"
                         android:background="@drawable/rectangle_layout"
                         android:backgroundTint="@android:color/white"
-                        android:paddingLeft="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp"
                         android:textSize="15sp" />
                 </LinearLayout>
 
@@ -112,15 +115,16 @@
                         android:layout_marginBottom="10dp"
                         android:text="🎨 카테고리 선택하기"
                         android:textStyle="bold" />
+
                     <TextView
                         android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="+ 카테고리 추가하러 가기"
-                        android:textStyle="bold"
                         android:gravity="center"
                         android:id="@+id/textview_add_category"
                         android:layout_margin="10dp" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never"
@@ -138,25 +142,38 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_add_todo_complete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_layout"
+                    android:backgroundTint="@color/rectangle_layout"
+                    android:text="생성"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_modify_todo"
+                    android:background="@drawable/rectangle_layout"
+                    android:backgroundTint="@color/rectangle_layout"
+                    android:text="수정"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_add_todo_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
                     android:backgroundTint="@color/rectangle_layout"
                     android:background="@drawable/rectangle_layout"
                     android:text="취소"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_add_todo_complete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rectangle_layout"
-                    android:backgroundTint="@color/rectangle_layout"
-                    android:text="확인"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

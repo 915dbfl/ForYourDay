@@ -24,6 +24,12 @@
         tools:layout="@layout/fragment_add_todo" />
 
     <fragment
+        android:id="@+id/nav_add_d_day"
+        android:name="com.cookandroid.foryourday.ui.add_d_day.AddDDayFragment"
+        android:label="@string/menu_add_d_day"
+        tools:layout="@layout/fragment_add_d_day" />
+
+    <fragment
         android:id="@+id/nav_setting"
         android:name="com.cookandroid.foryourday.ui.setting.SettingFragment"
         android:label="@string/menu_setting"

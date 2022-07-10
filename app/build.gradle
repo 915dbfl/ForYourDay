@@ -61,4 +61,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //color picker
     implementation 'com.github.Dhaval2404:ColorPicker:2.3'
+    //MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
 }

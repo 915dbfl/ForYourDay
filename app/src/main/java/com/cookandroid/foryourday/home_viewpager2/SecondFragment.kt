@@ -5,20 +5,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.cookandroid.foryourday.calendar.CalendarViewModel
 import com.cookandroid.foryourday.databinding.ViewpagerSecondFragmentBinding
 import java.util.*
 
 class SecondFragment: Fragment() {
     private var _binding: ViewpagerSecondFragmentBinding? = null
     private val binding get() = _binding!!
+    private val calendarViewModel: CalendarViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ViewpagerSecondFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val weeklyCalendar = binding.weeklyCalendarView
         val calInstance = Calendar.getInstance()
-        weeklyCalendar.updateCalendar(calInstance)
+        calInstance.time = calendarViewModel.date.value!!
+        val weeklyCalendar = binding.weeklyCalendarView
+        calendarViewModel.setWeeklyCalendarView(weeklyCalendar)
+        weeklyCalendar.setCalendarViewModel(calendarViewModel)
+        weeklyCalendar.updateCalendar(calInstance, calInstance.time)
+
+        val todoRecycler = binding.todoRecycler
+        todoRecycler.setCalendarViewModel(calendarViewModel)
 
         return root
     }

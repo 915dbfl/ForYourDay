@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
+        android:contentDescription="@null"
         android:layout_marginTop="30dp"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:layout_marginBottom="-10dp"
-        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/sign_in"/>
@@ -76,7 +77,8 @@
         <LinearLayout
             android:gravity="center"
             android:layout_margin="10dp"
-            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -110,10 +112,14 @@
                 android:text="닉네임: "
                 android:textStyle="bold"/>
             <EditText
-                android:layout_width="match_parent"
+                android:importantForAutofill="no"
+                android:layout_width="0dp"
+                android:hint="ex) 콩나물"
+                android:inputType="text"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
                 android:id="@+id/edt_user_name"/>
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="50dp"
@@ -141,7 +147,7 @@
             android:textStyle="bold"
             android:backgroundTint="#DDD3D3" />
         <androidx.appcompat.widget.AppCompatButton
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_sign_up"

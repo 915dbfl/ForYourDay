@@ -3,29 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.cookandroid.foryourday.calendar.WeeklyCalendarView
-        android:id="@+id/weekly_calendar_view"
-        android:padding="20dp"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/layout_list"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:layout_marginLeft="30dp"
-            android:text="To do List"/>
-
-        <com.cookandroid.foryourday.todo.TodoRecyclerView
-            android:id="@+id/todo_recycler"
-            android:layout_margin="10dp"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.cookandroid.foryourday.calendar.WeeklyCalendarView
+                android:id="@+id/weekly_calendar_view"
+                android:paddingTop="20dp"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.cookandroid.foryourday.todo_custom_view.TodoRecyclerView
+                android:id="@+id/todo_recycler"
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

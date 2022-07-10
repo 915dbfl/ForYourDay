@@ -4,44 +4,67 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/dbfl0/.gradle/caches/transforms-3/cc1fe5a366128cde1604996615108d48/transformed/jetified-oauth-5.1.0/res/layout/nid_progress_dialog.xml" value="0.12864583333333332" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.10277777777777777" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/btn_rectangle_shape.xml" value="0.1" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/calendar_b_month.xml" value="0.14322916666666666" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/calendar_n_month.xml" value="0.14322916666666666" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/calendar_shape.xml" value="0.14270833333333333" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/circle_layout.xml" value="0.15989583333333332" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/d_day_category_layout.xml" value="0.22777777777777777" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/drawer_item.xml" value="0.261025641025641" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/drawer_item_clicked_layout.xml" value="0.14479166666666668" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/drawer_layout.xml" value="0.13854166666666667" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.13697916666666668" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.11944444444444445" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/ic_launcher_background.xml" value="0.13697916666666668" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/ic_menu_home.xml" value="0.1" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/rectangle_layout.xml" value="0.1" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/rectangle_layout_for_btn.xml" value="0.14322916666666666" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/rectangle_layout_nav.xml" value="0.1" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/drawable/side_nav_bar.xml" value="0.14427083333333332" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/activity_login.xml" value="0.152" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/activty_sign_up.xml" value="0.1" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/app_bar_main.xml" value="0.12708333333333333" />
-        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/calendar_day.xml" value="0.1" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/calendar_day.xml" value="0.152" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/category_create_recyclerview_item.xml" value="0.140625" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/category_dialog.xml" value="0.1265625" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/color_picker_dialog.xml" value="0.536" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/content_main.xml" value="0.1" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/custom_calendar.xml" value="0.1" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/custom_color_picker.xml" value="0.264" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/custom_weekly_calendar.xml" value="0.2" />
-        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/d_day_recyclerview_item.xml" value="0.136" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/d_day_recyclerview_category.xml" value="0.264" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/d_day_recyclerview_item.xml" value="0.4" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/d_day_recyclerview_main_item.xml" value="0.264" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/dialog_category.xml" value="0.140625" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/dialog_category_delete.xml" value="0.34974093264248707" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/dialog_change_user_img.xml" value="0.4" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/dialog_change_user_name.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/dialog_color_picker.xml" value="0.1" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/dialog_color_picker_item.xml" value="0.2" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/dialog_d_day.xml" value="0.4" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/dialog_delete_user.xml" value="0.264" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/dialog_todo.xml" value="0.264" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/fragment_add_category.xml" value="0.264" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/fragment_add_d_day.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/fragment_add_todo.xml" value="0.264" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/fragment_gallery.xml" value="0.1328125" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/fragment_home.xml" value="0.25885416666666666" />
-        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/fragment_setting.xml" value="0.1" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/fragment_setting.xml" value="0.264" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/nav_header_main.xml" value="0.1328125" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/radio_btn_recyclerview.xml" value="0.16" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/todo_add_fragment.xml" value="0.2" />
-        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/todo_recyclerview.xml" value="0.1" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/todo_recyclerview.xml" value="0.264" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/todo_recyclerview_category.xml" value="0.12760416666666666" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/todo_recyclerview_item.xml" value="0.264" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/viewpager_first_fragment.xml" value="0.1721014492753623" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/viewpager_second_fragment.xml" value="0.264" />
-        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/viewpager_third_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/layout/viewpager_third_fragment.xml" value="0.264" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/menu/main.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/dbfl0/AndroidStudioProjects/ForYourDay/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.17552083333333332" />

@@ -1,61 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/rectangle_layout"
-    android:backgroundTint="#EEEBEB"
     android:layout_marginTop="5dp"
-    android:layout_marginLeft="30dp"
-    android:layout_marginRight="30dp"
-    android:orientation="horizontal"
-    android:padding="10dp"
+    android:id="@+id/layout_d_day"
+    android:paddingStart="15dp"
+    android:paddingEnd="0dp"
     android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/partition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="D - "
-        android:textStyle="bold"
-        android:textSize="23sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="23sp"
-        android:text="1"
+        android:textSize="18sp"
+        android:text="D - 1"
         android:id="@+id/d_day_amount"
         android:textStyle="bold"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="2dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="10dp"
+        android:id="@+id/partition"
+        android:background="@color/rectangle_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/d_day_amount"
+        app:layout_constraintRight_toLeftOf="@id/d_day_content"/>
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/partition"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="10dp"
+        android:id="@+id/d_day_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="중요"
+        android:textSize="15sp"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_marginLeft="10dp"
-        android:backgroundTint="#FFF"
-        android:background="@drawable/rectangle_layout"
-        android:layout_height="match_parent">
-
-        <TextView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/d_day_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="중요"
-            android:textSize="15sp"/>
-
-        <LinearLayout
-            android:id="@+id/category_color"
-            android:layout_width="80dp"
-            android:layout_height="5dp"
-            android:background="@color/category_important"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginRight="25dp"
-            android:orientation="horizontal" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</LinearLayout>
+    <LinearLayout
+        android:layout_marginEnd="25dp"
+        android:id="@+id/category_color"
+        android:layout_width="80dp"
+        android:layout_height="5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal" />
+    <ImageView
+        android:contentDescription="set_main"
+        android:id="@+id/img_check_main"
+        android:visibility="invisible"
+        android:layout_marginEnd="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_home_24"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,7 +17,11 @@
             android:icon="@drawable/ic_menu_add_todo"
             android:title="@string/menu_add_todo" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_add_d_day"
+            android:icon="@drawable/ic_baseline_calendar_month_24"
+            android:title="@string/menu_add_d_day" />
+        <item
+            android:id="@+id/nav_setting"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="@string/menu_setting" />
     </group>

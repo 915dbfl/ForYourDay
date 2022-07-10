@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -11,9 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.cookandroid.foryourday.databinding.ActivitySignUpBinding
 import com.cookandroid.foryourday.retrofit.ApiInterface
 import com.cookandroid.foryourday.retrofit.UserData
-import com.cookandroid.foryourday.retrofit.OAuthInfo
 import com.cookandroid.foryourday.retrofit.UserInfo
-import com.cookandroid.foryourday.sqlite.DBHelper
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -32,16 +31,12 @@ import retrofit2.Response
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var context: Context
-
     private lateinit var clientId: String
     private lateinit var clientSecret: String
     private val clientName = "ForYourDay"
-
     private lateinit var gso: GoogleSignInOptions
     private lateinit var mGoogleSignInClient: GoogleSignInClient
-
-    private val userInfo = UserInfo(null, null, null)
-    private val oauthInfo = OAuthInfo(null, null)
+    private val userInfo = UserInfo(null, null, null, null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +76,7 @@ class SignUpActivity : AppCompatActivity() {
                     }
 
                     override fun onError(errorCode: Int, message: String) {
-                        Log.d("callProfileApi", "errorCode: " + errorCode.toString())
+                        Log.d("callProfileApi", "errorCode: $errorCode")
                     }
                 })
             }
@@ -102,10 +97,14 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         binding.btnCheckId.setOnClickListener {
-            userInfo.userName = binding.edtUserName.text.toString()
-            binding.checkUser.isChecked = true
-            binding.layoutGetName.visibility = View.GONE
-            binding.edtUserName.hideKeyBoard()
+            if(binding.edtUserName.text.toString().replace(" ", "") != ""){
+                userInfo.userName = binding.edtUserName.text.toString()
+                binding.checkUser.isChecked = true
+                binding.layoutGetName.visibility = View.GONE
+            }else{
+                Toast.makeText(context, "닉네임을 입력해주세요!", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         binding.btnHome.setOnClickListener {
@@ -114,7 +113,6 @@ class SignUpActivity : AppCompatActivity() {
 
         binding.btnSignUp.setOnClickListener {
             postApi()
-            finish()
         }
     }
 
@@ -143,11 +141,9 @@ class SignUpActivity : AppCompatActivity() {
             object : retrofit2.Callback<UserData>{
                 override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
                     if(response.isSuccessful){
-                        userInfo.userId = response.body()!!.user.userId
-                        oauthInfo.accessToken = response.body()!!.oauth.accessToken
-                        oauthInfo.refreshToken = response.body()!!.oauth.refreshToken
-                        addUserInfo()
+//                        setUserInfo(response)
                         Toast.makeText(context, "${userInfo.userName}님! 회원가입에 성공하셨습니다!☺", Toast.LENGTH_SHORT).show()
+                        finish()
                     }else{
                         if(response.code() in 400..500){
                             val jOBjError = JSONObject(response.errorBody()!!.charStream().readText())
@@ -157,28 +153,15 @@ class SignUpActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<UserData>, t: Throwable) {
-                    Log.d("postApi", "error: ${t.toString()}")
+                    Log.d("postApi", "error: $t")
                 }
             }
         )
     }
 
-    private fun addUserInfo(){
-        val helper = DBHelper(context)
-
-        val sql = """
-            insert into UserTable (accessToken, refreshToken, userId, userName, email)
-            values(?, ?, ?, ?, ?)
-        """.trimIndent()
-
-        val arg = arrayOf(oauthInfo.accessToken, oauthInfo.refreshToken, userInfo.userId, userInfo.userName, userInfo.email)
-
-        helper.writableDatabase.execSQL(sql, arg)
-        helper.writableDatabase.close()
-    }
-
-    private fun View.hideKeyBoard(){
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+        return super.dispatchTouchEvent(ev)
     }
 }
