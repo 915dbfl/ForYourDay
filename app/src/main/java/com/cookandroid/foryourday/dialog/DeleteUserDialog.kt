@@ -14,6 +14,8 @@ import com.cookandroid.foryourday.R
 import com.cookandroid.foryourday.login.LoginActivity
 import com.cookandroid.foryourday.retrofit.ApiInterface
 import com.cookandroid.foryourday.sqlite.SQLite
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -23,6 +25,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 
 class DeleteUserDialog(private val context: Context, private val email: String){
     private val dlg = Dialog(context)
@@ -37,8 +40,6 @@ class DeleteUserDialog(private val context: Context, private val email: String){
 
         btnDelete.setOnClickListener {
             val lst = email.split("@")
-            val intent = Intent(context, LoginActivity::class.java)
-            val sqlite = SQLite(context)
             if(lst[1] == "naver.com"){
                 NidOAuthLogin().callDeleteTokenApi(context, object : OAuthLoginCallback {
                     override fun onError(errorCode: Int, message: String) {
@@ -54,32 +55,22 @@ class DeleteUserDialog(private val context: Context, private val email: String){
                         CoroutineScope(Dispatchers.Default).launch {
                             dlg.dismiss()
                             deleteUserApi()
-                            sqlite.deleteUser()
-                            startActivity(context, intent, null)
                         }
 
                     }
                 })
             }else{
-//                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                    .requestEmail()
-//                    .build()
-//                val mGoogleSignInClient = GoogleSignIn.getClient(context, gso)
-//                mGoogleSignInClient.revokeAccess()
-//                    .addOnCompleteListener((context as MainActivity)) {
-//                        CoroutineScope(Dispatchers.Default).launch {
-//                            dlg.dismiss()
-//                            deleteUserApi()
-//                            dbFuns.deleteUser()
-//                            startActivity(context, intent, null)
-//                        }
-//                    }
-                CoroutineScope(Dispatchers.Default).launch {
-                    dlg.dismiss()
-                    deleteUserApi()
-                    sqlite.deleteUser()
-                    startActivity(context, intent, null)
-                }
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build()
+                val mGoogleSignInClient = GoogleSignIn.getClient(context, gso)
+                mGoogleSignInClient.revokeAccess()
+                    .addOnCompleteListener{
+                        CoroutineScope(Dispatchers.Default).launch {
+                            dlg.dismiss()
+                            deleteUserApi()
+                        }
+                    }
             }
 
         }
@@ -95,12 +86,14 @@ class DeleteUserDialog(private val context: Context, private val email: String){
         val sqlite = SQLite(context)
         val userInfo = sqlite.getUserInfo().await()
         val header = "bearerToken ${userInfo.oauth.accessToken}"
+        val intent = Intent(context, LoginActivity::class.java)
         ApiInterface.create().deleteUser(header, userInfo.user.userId!!).enqueue(
             object : retrofit2.Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if(response.isSuccessful){
-                        Log.d("ㅎㅇㅎㅇㅎ", "서버에서 회원 삭제")
-                        Toast.makeText(context, "탈퇴되었습니다!\n 그동안 감사했습니다🤗", Toast.LENGTH_SHORT).show()
+                        sqlite.deleteUser()
+                        Toast.makeText(context, "탈퇴되었습니다!\n그동안 감사했습니다.🤗", Toast.LENGTH_SHORT).show()
+                        startActivity(context, intent, null)
                     }else{
                         if(response.code() in 400..500){
                             val jObjError = JSONObject(response.errorBody()!!.charStream().readText())
@@ -110,7 +103,11 @@ class DeleteUserDialog(private val context: Context, private val email: String){
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("deleteUserApi", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else {
+                        Log.d("deleteUserApi", "error: $t")
+                    }
                 }
             }
         )
