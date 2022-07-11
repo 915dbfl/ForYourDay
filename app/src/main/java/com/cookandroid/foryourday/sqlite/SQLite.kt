@@ -7,8 +7,10 @@ import android.widget.Toast
 import com.cookandroid.foryourday.main.MainActivity
 import com.cookandroid.foryourday.retrofit.*
 import kotlinx.coroutines.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -161,11 +163,20 @@ class SQLite(val context: Context){
                             db.execSQL(sql, arg)
                         }
                         db.close()
+                    }else{
+                        if(response.code() in 400..500){
+                            val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<Categories>, t: Throwable) {
-                    Log.d("makeCategoriesDB", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("makeCategoriesDB", "error: $t")
+                    }
                 }
             }
         )
@@ -189,11 +200,20 @@ class SQLite(val context: Context){
                             db.execSQL(sql, arg)
                         }
                         db.close()
+                    }else{
+                        if(response.code() in 400..500){
+                            val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<ToDos>, t: Throwable) {
-                    Log.d("makeTodoDB", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("makeTodoDB", "error: $t")
+                    }
                 }
             }
         )
@@ -219,11 +239,20 @@ class SQLite(val context: Context){
                         val mainIntent = Intent(context, MainActivity::class.java)
                         context.startActivity(mainIntent)
                         Toast.makeText(context, "${userData.user.userName}님! 반갑습니다! 🤗", Toast.LENGTH_SHORT).show()
+                    }else{
+                        if(response.code() in 400..500){
+                            val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<DDays>, t: Throwable) {
-                    Log.d("makeDDayDB", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("makeDDayDB", "error: $t")
+                    }
                 }
             }
         )

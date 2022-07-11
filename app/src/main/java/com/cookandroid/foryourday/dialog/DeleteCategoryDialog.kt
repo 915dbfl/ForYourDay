@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 
 class DeleteCategoryDialog(val context: Context) {
     private val dlg = Dialog(context)
@@ -73,11 +74,13 @@ class DeleteCategoryDialog(val context: Context) {
             val sql2 = "select * from DDaysTable where categoryId = $id"
             val c2 =dDayDb.rawQuery(sql2, null)
             if(c2.count > 0){
-                while(c1.moveToNext()){
+                while(c2.moveToNext()){
                     val idx = c2.getColumnIndex("id")
                     val id2 = c2.getInt(idx)
+                    Log.d("dfdf", "$id2 삭제 진행!")
                     deleteDDay(id2, header)
                 }
+                Log.d("ㄷㄹㄷㄹㄷㄹ", "디비 삭제 진행!")
                 dDayDb.execSQL("delete from DDaysTable where categoryId = $id")
             }
             c2.close()
@@ -91,18 +94,20 @@ class DeleteCategoryDialog(val context: Context) {
         ApiInterface.create().deleteTodo(header, id).enqueue(
             object : retrofit2.Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.isSuccessful){
-                        Log.d("deleteTodo", " $id 투두가 삭제되었습니다.")
-                    }else{
+                    if(!response.isSuccessful){
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
-                            Log.d("deleteCategory", jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"))
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("deleteCategory", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("deleteCategory", "error: $t")
+                    }
                 }
             }
         )
@@ -112,18 +117,20 @@ class DeleteCategoryDialog(val context: Context) {
         ApiInterface.create().deleteDDay(header, id).enqueue(
             object : retrofit2.Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.isSuccessful){
-                        Log.d("deleteDDay", " $id 디데이가 삭제되었습니다.")
-                    }else{
+                    if(!response.isSuccessful) {
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
-                            Log.d("deleteDDay", jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"))
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("deleteDDay", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("deleteDDay", "error: $t")
+                    }
                 }
             }
         )
@@ -137,7 +144,7 @@ class DeleteCategoryDialog(val context: Context) {
                         CoroutineScope(Dispatchers.Main).launch {
                             sqlite.deleteCategoryDB(id)
                             if (check){
-                                Toast.makeText(context, "삭제가 완료되었습니다!😊", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "삭제가 완료되었습니다!🙌", Toast.LENGTH_SHORT).show()
                                 fragment.also {
                                     it.btnDeleteComplete!!.visibility = View.GONE
                                     it.btnDeleteCancel!!.visibility = View.GONE
@@ -158,13 +165,17 @@ class DeleteCategoryDialog(val context: Context) {
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
-                            Log.d("deleteCategory", jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"))
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("deleteCategory", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("deleteCategory", "error: $t")
+                    }
                 }
             }
         )

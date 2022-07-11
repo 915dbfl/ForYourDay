@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,12 +67,7 @@ class DDayDetailDialog(private val context: Context, private val view: View) {
 
         btnDDayDelete.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                deleteDDay(data.id!!)
-                deleteDDayDb(data.id)
-                val dDayViewModel = ViewModelProvider(context as ViewModelStoreOwner)[DDayViewModel::class.java]
-                dDayViewModel.setUpdatePosition(position)
-                Toast.makeText(context, "삭제가 완료되었습니다! 🤗", Toast.LENGTH_SHORT).show()
-                dlg.dismiss()
+                deleteDDay(data.id!!, position)
             }
         }
 
@@ -86,21 +82,31 @@ class DDayDetailDialog(private val context: Context, private val view: View) {
         dlg.show()
     }
 
-    private suspend fun deleteDDay(id: Int){
+    private suspend fun deleteDDay(id: Int, position: Int){
         val header = "bearerToken ${sqlite.getUserInfo().await().oauth.accessToken}"
         ApiInterface.create().deleteDDay(header, id).enqueue(
             object : retrofit2.Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(!response.isSuccessful){
+                    if(response.isSuccessful) {
+                        deleteDDayDb(id)
+                        val dDayViewModel = ViewModelProvider(context as ViewModelStoreOwner)[DDayViewModel::class.java]
+                        dDayViewModel.setUpdatePosition(position)
+                        Toast.makeText(context, "삭제가 완료되었습니다!🙌", Toast.LENGTH_SHORT).show()
+                        dlg.dismiss()
+                    }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
-                            Log.d("deleteDDay", jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"))
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("deleteDDay", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("deleteDDay", "error: $t")
+                    }
                 }
             }
         )

@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -129,6 +130,7 @@ class AddDDayFragment: Fragment() {
         btnDDayModify.setOnClickListener {
             val date = dateData!!.time
             val dDayData = DDayData(modifyData!!.id, modifyData!!.userId, dDayCheckMain.isChecked, categoryRecyclerViewAdapter.selectedCategoryId, date, edtDDayLabel.text.toString())
+            Log.d("ㅇㄹㅇㄹ", dDayData.toString())
             CoroutineScope(Dispatchers.Default).launch {
                 patchApi(dDayData)
             }
@@ -151,18 +153,22 @@ class AddDDayFragment: Fragment() {
                         CoroutineScope(Dispatchers.Main).launch {
                             sqlite.patchDDayDB(dDayData)
                             dDayViewModel.setUpdatePosition(0)
+                            Toast.makeText(context, "수정이 완료되었습니다!🤗", Toast.LENGTH_SHORT).show()
                         }
-                        Toast.makeText(context, "수정이 완료되었습니다!🤗", Toast.LENGTH_SHORT).show()
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
-                            Log.d("patchDDayApi", jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"))
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("patchDDayApi", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("patchDDayApi", "error: $t")
+                    }
                 }
             }
         )
@@ -179,7 +185,7 @@ class AddDDayFragment: Fragment() {
                             sqlite.addDDayDB(response.body()!!.data)
                             dDayViewModel.setUpdatePosition(0)
                         }
-                        Toast.makeText(context, "디데이가 추가되었습니다!.😊", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "디데이가 추가되었습니다!😊", Toast.LENGTH_SHORT).show()
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
@@ -189,7 +195,11 @@ class AddDDayFragment: Fragment() {
                 }
 
                 override fun onFailure(call: Call<DDay>, t: Throwable) {
-                    Log.d("dDayPostApi", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("dDayPostApi", "error: $t")
+                    }
                 }
             }
         )

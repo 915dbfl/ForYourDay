@@ -27,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.io.IOException
 
 
 class LoginActivity: AppCompatActivity() {
@@ -159,7 +160,11 @@ class LoginActivity: AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<UserData>, t: Throwable) {
-                    Log.d("postApi", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("postApi", "error: $t")
+                    }
                 }
             }
         )

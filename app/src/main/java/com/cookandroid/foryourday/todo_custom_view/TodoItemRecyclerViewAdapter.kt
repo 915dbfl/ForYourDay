@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.foryourday.R
 import com.cookandroid.foryourday.calendar.CalendarViewModel
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 import kotlin.collections.ArrayList
 
 class TodoItemRecyclerViewAdapter(private val parentViewHolderTodo: TodoCategoryRecyclerViewAdapter.ViewHolder, private val category: String, private val categoryVal: String, private val dataSet: ArrayList<ToDoData>, private val context: Context): RecyclerView.Adapter<TodoItemRecyclerViewAdapter.ViewHolder>() {
@@ -98,13 +100,17 @@ class TodoItemRecyclerViewAdapter(private val parentViewHolderTodo: TodoCategory
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
-                            Log.d("patchTodoApi", jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"))
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("patchTodoApi", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("patchTodoApi", "error: $t")
+                    }
                 }
             }
         )

@@ -31,6 +31,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.io.BufferedInputStream
 import java.io.File
+import java.io.IOException
 import java.net.URL
 
 class ChangeUserImgDialog(private val context: Context, private val fragment: SettingFragment){
@@ -152,7 +153,11 @@ class ChangeUserImgDialog(private val context: Context, private val fragment: Se
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("patchUserName", "error: $t")
+                    if (t is IOException) {
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.d("patchUserName", "error: $t")
+                    }
                 }
             }
         )

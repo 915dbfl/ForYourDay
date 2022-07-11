@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.cookandroid.foryourday.R
 import com.cookandroid.foryourday.databinding.ActivityMainBinding
 import com.cookandroid.foryourday.sqlite.SQLite
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val sqlite = SQLite(this)
     lateinit var header: View
+    var googleSignInClient: GoogleSignInClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

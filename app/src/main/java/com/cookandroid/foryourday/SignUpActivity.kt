@@ -27,6 +27,7 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -141,19 +142,22 @@ class SignUpActivity : AppCompatActivity() {
             object : retrofit2.Callback<UserData>{
                 override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
                     if(response.isSuccessful){
-//                        setUserInfo(response)
-                        Toast.makeText(context, "${userInfo.userName}님! 회원가입에 성공하셨습니다!☺", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "${userInfo.userName}님! 회원가입에 성공하셨습니다!\n 로그인을 진행해주세요!☺", Toast.LENGTH_SHORT).show()
                         finish()
                     }else{
                         if(response.code() in 400..500){
-                            val jOBjError = JSONObject(response.errorBody()!!.charStream().readText())
-                            Toast.makeText(context, jOBjError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
+                            val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<UserData>, t: Throwable) {
-                    Log.d("postApi", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("postApi", "error: $t")
+                    }
                 }
             }
         )

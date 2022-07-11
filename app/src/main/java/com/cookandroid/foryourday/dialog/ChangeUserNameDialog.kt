@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 
 class ChangeUserNameDialog(private val context: Context)  {
     private val dlg = Dialog(context)
@@ -81,7 +82,11 @@ class ChangeUserNameDialog(private val context: Context)  {
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("patchUserName", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("patchUserName", "error: $t")
+                    }
                 }
             }
         )

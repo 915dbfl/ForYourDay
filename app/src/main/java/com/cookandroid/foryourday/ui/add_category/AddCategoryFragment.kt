@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 
 class AddCategoryFragment : androidx.fragment.app.Fragment(){
     private var _binding: FragmentAddCategoryBinding? = null
@@ -155,7 +156,6 @@ class AddCategoryFragment : androidx.fragment.app.Fragment(){
                             categoryData.id = response.body()!!.category.id
                             sqlite.addCategoryDB(categoryData)
                             val categories = sqlite.getCategories().await()
-                            Log.d("확인용", categories.toString())
                             addCategoryRecyclerViewAdapter!!.setValue(categories,false)
                             if(categories.isEmpty()){
                                 addCategoryMessage!!.visibility = View.VISIBLE
@@ -177,7 +177,11 @@ class AddCategoryFragment : androidx.fragment.app.Fragment(){
                 }
 
                 override fun onFailure(call: Call<Category>, t: Throwable) {
-                    Log.d("categoryPostApi", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("categoryPostApi", "error: $t")
+                    }
                 }
             }
         )

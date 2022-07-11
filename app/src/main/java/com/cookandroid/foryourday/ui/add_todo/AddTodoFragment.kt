@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -136,18 +137,22 @@ class AddTodoFragment :androidx.fragment.app.Fragment() {
                     if(response.isSuccessful){
                         CoroutineScope(Dispatchers.Main).launch {
                             sqlite.patchTodoDB(todoData)
-                            Toast.makeText(context, "수정이 완료되었습니다!🤗", Toast.LENGTH_SHORT).show()
                         }
+                        Toast.makeText(context, "수정이 완료되었습니다!🤗", Toast.LENGTH_SHORT).show()
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
-                            Log.d("patchTodoApi", jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"))
+                            Toast.makeText(context, jObjectError.getJSONArray("errors").getJSONObject(0).getString("message"), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("patchTodoApi", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("patchTodoApi", "error: $t")
+                    }
                 }
             }
         )
@@ -161,10 +166,9 @@ class AddTodoFragment :androidx.fragment.app.Fragment() {
                 override fun onResponse(call: Call<ToDo>, response: Response<ToDo>) {
                     if(response.isSuccessful){
                         CoroutineScope(Dispatchers.Default).launch {
-                            Log.d("투두 추가", response.body()!!.todo.toString())
                             sqlite.addTodoDB(response.body()!!.todo)
                         }
-                        Toast.makeText(context, "투두가 추가되었습니다!.😊", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "투두가 추가되었습니다!😊", Toast.LENGTH_SHORT).show()
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
@@ -174,7 +178,11 @@ class AddTodoFragment :androidx.fragment.app.Fragment() {
                 }
 
                 override fun onFailure(call: Call<ToDo>, t: Throwable) {
-                    Log.d("todoPostApi", "error: $t")
+                    if(t is IOException){
+                        Toast.makeText(context, "네트워크를 확인해주세요!🙄", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Log.d("todoPostApi", "error: $t")
+                    }
                 }
             }
         )
