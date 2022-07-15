@@ -71,7 +71,6 @@ class CalendarAdapter(private val context: Context, private val days: ArrayList<
                 val newIndex = it.tag as Int
                 val newDate = getItem(newIndex)
                 val oldIndex = pos
-                Log.d("ㄷㄹㄷㄹ", "$newIndex $oldIndex")
                 this@CalendarAdapter.pos = newIndex
                 if(type == 1){
                     calendarViewModel.updatePickerDate(newDate)

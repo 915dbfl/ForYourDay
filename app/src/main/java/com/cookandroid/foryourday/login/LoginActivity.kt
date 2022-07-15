@@ -54,6 +54,7 @@ class LoginActivity: AppCompatActivity() {
         val userName = checkLogin()
         if(userName != null){
             val mainIntent = Intent(context, MainActivity::class.java)
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(mainIntent)
             Toast.makeText(context, "${userName}님! 반갑습니다! 🤗", Toast.LENGTH_SHORT).show()
         }else{
@@ -83,6 +84,7 @@ class LoginActivity: AppCompatActivity() {
             override fun onFailure(httpStatus: Int, message: String) {
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 Log.d("OAuthLoginCallback", "errorCode: $errorCode")
+                Toast.makeText(context, "OAuthLoginCallback: $errorCode", Toast.LENGTH_SHORT).show()
             }
 
             override fun onSuccess() {
@@ -92,7 +94,10 @@ class LoginActivity: AppCompatActivity() {
                     }
 
                     override fun onFailure(httpStatus: Int, message: String) {
-                        Log.d("callProfileApi", "errorCode: $httpStatus")
+                        val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                        val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                        Toast.makeText(context, "로그인 도중 오류가 발생했습니다.\n다시 시도해주세요!😔",Toast.LENGTH_SHORT).show()
+                        Log.e("naverIdLogin", "errorCode:$errorCode, errorDesc:$errorDescription")
                     }
 
                     override fun onSuccess(result: NidProfileResponse) {

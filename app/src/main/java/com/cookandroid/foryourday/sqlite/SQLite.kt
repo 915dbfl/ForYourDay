@@ -237,6 +237,7 @@ class SQLite(val context: Context){
                         }
                         db.close()
                         val mainIntent = Intent(context, MainActivity::class.java)
+                        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         context.startActivity(mainIntent)
                         Toast.makeText(context, "${userData.user.userName}님! 반갑습니다! 🤗", Toast.LENGTH_SHORT).show()
                     }else{

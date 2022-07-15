@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,7 +45,10 @@ class TodoRecyclerView(context: Context?, attrs: AttributeSet?) : LinearLayout(c
         textTodoDate = findViewById(R.id.text_todo_date)
 
         textAddTodo.setOnClickListener {
-            it.findNavController().navigate(R.id.nav_add_todo)
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.nav_home, inclusive = false, saveState = true)
+                .build()
+            it.findNavController().navigate(R.id.nav_add_todo, null, navOptions)
         }
     }
 

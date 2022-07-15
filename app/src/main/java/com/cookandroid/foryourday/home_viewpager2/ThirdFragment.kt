@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -71,7 +72,10 @@ class ThirdFragment: Fragment() {
         })
 
         btnAddDDay.setOnClickListener {
-            it.findNavController().navigate(R.id.nav_add_d_day)
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.nav_home, inclusive = false, saveState = true)
+                .build()
+            it.findNavController().navigate(R.id.nav_add_d_day, null, navOptions)
         }
         return root
     }

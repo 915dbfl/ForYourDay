@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.foryourday.R
 import com.cookandroid.foryourday.calendar.CalendarView
@@ -90,6 +90,8 @@ class AddDDayFragment: Fragment() {
                 categoryRecyclerViewAdapter.selectedCategoryId = modifyData!!.categoryId
                 categoryRecyclerViewAdapter.notifyDataSetChanged()
                 dDayCheckMain.isChecked = modifyData!!.main
+            }else{
+                edtDDayLabel.text = null
             }
         }
 
@@ -107,34 +109,39 @@ class AddDDayFragment: Fragment() {
 
         btnComplete.setOnClickListener {
             val label = edtDDayLabel.text.toString()
-            if(label.replace(" ", "") == ""){
-                Toast.makeText(context, "디데이 이름을 설정해주세요!", Toast.LENGTH_SHORT).show()
-            }else{
-                val date = dateData!!.time
-                val dDayData = DDayData(null, null, dDayCheckMain.isChecked, categoryRecyclerViewAdapter.selectedCategoryId, date, label)
-                CoroutineScope(Dispatchers.Default).launch {
-                    postApi(dDayData)
+            when {
+                label.replace(" ", "") == "" -> {
+                    Toast.makeText(context, "디데이 이름을 설정해주세요!😊", Toast.LENGTH_SHORT).show()
                 }
-                it.findNavController().navigate(R.id.nav_home)
+                categoryRecyclerViewAdapter.selectedCategoryId == -1 -> {
+                    Toast.makeText(context, "카테고리를 설정해주세요!😊", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    val date = dateData!!.time
+                    val dDayData = DDayData(null, null, dDayCheckMain.isChecked, categoryRecyclerViewAdapter.selectedCategoryId, date, label)
+                    CoroutineScope(Dispatchers.Default).launch {
+                        postApi(dDayData)
+                    }
+                }
             }
         }
 
         btnCancel.setOnClickListener {
-            it.findNavController().navigate(R.id.nav_home)
+            findNavController().popBackStack(R.id.nav_home, true)
+            findNavController().navigate(R.id.nav_home)
         }
 
         textViewAddCategory.setOnClickListener {
-            it.findNavController().navigate(R.id.nav_add_category)
+            findNavController().popBackStack()
+            findNavController().navigate(R.id.nav_add_category)
         }
 
         btnDDayModify.setOnClickListener {
             val date = dateData!!.time
             val dDayData = DDayData(modifyData!!.id, modifyData!!.userId, dDayCheckMain.isChecked, categoryRecyclerViewAdapter.selectedCategoryId, date, edtDDayLabel.text.toString())
-            Log.d("ㅇㄹㅇㄹ", dDayData.toString())
             CoroutineScope(Dispatchers.Default).launch {
                 patchApi(dDayData)
             }
-            it.findNavController().navigate(R.id.nav_home)
         }
     }
 
@@ -153,8 +160,10 @@ class AddDDayFragment: Fragment() {
                         CoroutineScope(Dispatchers.Main).launch {
                             sqlite.patchDDayDB(dDayData)
                             dDayViewModel.setUpdatePosition(0)
-                            Toast.makeText(context, "수정이 완료되었습니다!🤗", Toast.LENGTH_SHORT).show()
                         }
+                        Toast.makeText(context, "수정이 완료되었습니다!🤗", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack(R.id.nav_home, true)
+                        findNavController().navigate(R.id.nav_home)
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
@@ -186,6 +195,8 @@ class AddDDayFragment: Fragment() {
                             dDayViewModel.setUpdatePosition(0)
                         }
                         Toast.makeText(context, "디데이가 추가되었습니다!😊", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack(R.id.nav_home, true)
+                        findNavController().navigate(R.id.nav_home)
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())

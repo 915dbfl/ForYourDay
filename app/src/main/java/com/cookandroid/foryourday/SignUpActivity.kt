@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.cookandroid.foryourday.databinding.ActivitySignUpBinding
+import com.cookandroid.foryourday.login.LoginActivity
 import com.cookandroid.foryourday.retrofit.ApiInterface
 import com.cookandroid.foryourday.retrofit.UserData
 import com.cookandroid.foryourday.retrofit.UserInfo
@@ -73,11 +75,14 @@ class SignUpActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(httpStatus: Int, message: String) {
-                        Log.d("callProfileApi", "fail to callProfileApi")
+                        val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                        val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                        Toast.makeText(context, "로그인 도중 오류가 발생했습니다.\n다시 시도해주세요!😔",Toast.LENGTH_SHORT).show()
+                        Log.e("naverIdLogin", "errorCode:$errorCode, errorDesc:$errorDescription")
                     }
 
                     override fun onError(errorCode: Int, message: String) {
-                        Log.d("callProfileApi", "errorCode: $errorCode")
+                        onFailure(errorCode, message)
                     }
                 })
             }
@@ -109,7 +114,9 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         binding.btnHome.setOnClickListener {
-            finish()
+            val loginIntent = Intent(context, LoginActivity::class.java)
+            loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(loginIntent)
         }
 
         binding.btnSignUp.setOnClickListener {
@@ -142,8 +149,10 @@ class SignUpActivity : AppCompatActivity() {
             object : retrofit2.Callback<UserData>{
                 override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
                     if(response.isSuccessful){
-                        Toast.makeText(context, "${userInfo.userName}님! 회원가입에 성공하셨습니다!\n 로그인을 진행해주세요!☺", Toast.LENGTH_SHORT).show()
-                        finish()
+                        Toast.makeText(context, "${userInfo.userName}님! 회원가입에 성공하셨습니다!\n로그인을 진행해주세요!☺", Toast.LENGTH_SHORT).show()
+                        val loginIntent = Intent(context, LoginActivity::class.java)
+                        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(loginIntent)
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())

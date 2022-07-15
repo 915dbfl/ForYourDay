@@ -87,6 +87,7 @@ class DeleteUserDialog(private val context: Context, private val email: String){
         val userInfo = sqlite.getUserInfo().await()
         val header = "bearerToken ${userInfo.oauth.accessToken}"
         val intent = Intent(context, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         ApiInterface.create().deleteUser(header, userInfo.user.userId!!).enqueue(
             object : retrofit2.Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {

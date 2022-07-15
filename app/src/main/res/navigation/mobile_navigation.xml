@@ -15,19 +15,19 @@
         android:id="@+id/nav_add_category"
         android:name="com.cookandroid.foryourday.ui.add_category.AddCategoryFragment"
         android:label="@string/menu_add_category"
-        tools:layout="@layout/fragment_add_category" />
+        tools:layout="@layout/fragment_add_category"/>
 
     <fragment
         android:id="@+id/nav_add_todo"
         android:name="com.cookandroid.foryourday.ui.add_todo.AddTodoFragment"
         android:label="@string/menu_add_todo"
-        tools:layout="@layout/fragment_add_todo" />
+        tools:layout="@layout/fragment_add_todo"/>
 
     <fragment
         android:id="@+id/nav_add_d_day"
         android:name="com.cookandroid.foryourday.ui.add_d_day.AddDDayFragment"
         android:label="@string/menu_add_d_day"
-        tools:layout="@layout/fragment_add_d_day" />
+        tools:layout="@layout/fragment_add_d_day"/>
 
     <fragment
         android:id="@+id/nav_setting"

@@ -148,6 +148,7 @@ class AddCategoryFragment : androidx.fragment.app.Fragment(){
             object : retrofit2.Callback<Category>{
                 override fun onResponse(call: Call<Category>, response: Response<Category>) {
                     if(response.isSuccessful){
+                        Log.d("context 확인", context.toString())
                         Toast.makeText(context, "카테고리가 생성되었습니다!☺", Toast.LENGTH_SHORT).show()
                         edtCategoryName!!.text.clear()
                         layoutCreateCategory!!.visibility = View.GONE

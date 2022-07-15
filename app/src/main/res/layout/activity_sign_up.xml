@@ -52,7 +52,6 @@
             android:gravity="center"
             android:id="@+id/layout_social">
             <com.navercorp.nid.oauth.view.NidOAuthLoginButton
-                android:src="@drawable/btn_naver_login"
                 android:id="@+id/btn_naver_login"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp" />

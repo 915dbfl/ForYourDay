@@ -93,6 +93,7 @@ class SettingFragment : Fragment() {
         binding.userLogOut.setOnClickListener {
             val lst =  profileUserEmail.text.split("@")
             val intent = Intent(context!!, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             val sqlite1 = SQLite(context!!)
             if(lst[1] == "naver.com"){
                 Toast.makeText(context!!, "로그아웃되었습니다!", Toast.LENGTH_SHORT).show()

@@ -39,9 +39,6 @@ class AddToDoRecyclerViewAdapter(private val dataSet: List<CategoryData>)
         holder.textView.text = title
         holder.categoryColor.setBackgroundColor(Color.parseColor(value))
         holder.radioButton.isChecked = dataSet[position].id == selectedCategoryId
-//        if(dataSet[position].id == selectedCategoryId){
-//            selectedCategoryId = dataSet[position].id!!
-//        }
     }
 
     override fun getItemCount() = dataSet.size

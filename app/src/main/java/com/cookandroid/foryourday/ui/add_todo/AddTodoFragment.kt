@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.foryourday.R
 import com.cookandroid.foryourday.calendar.CalendarView
@@ -78,6 +78,8 @@ class AddTodoFragment :androidx.fragment.app.Fragment() {
                 edtTodoLabel.setText(modifyData!!.content)
                 categoryRecyclerViewAdapter.selectedCategoryId = modifyData!!.categoryId
                 categoryRecyclerViewAdapter.notifyDataSetChanged()
+            }else{
+                edtTodoLabel.text = null
             }
         }
 
@@ -94,23 +96,31 @@ class AddTodoFragment :androidx.fragment.app.Fragment() {
         btnComplete.setOnClickListener {
             val date = dateData!!.time
             val label = edtTodoLabel.text.toString()
-            if (label.replace(" ", "") == ""){
-                Toast.makeText(context, "투두 이름을 설정해주세요!", Toast.LENGTH_SHORT).show()
-            }else{
-                val todoData = ToDoData(null, false, label, date, categoryRecyclerViewAdapter.selectedCategoryId)
-                CoroutineScope(Dispatchers.Default).launch {
-                    postApi(todoData)
+            when {
+                label.replace(" ", "") == "" -> {
+                    Toast.makeText(context, "투두 이름을 설정해주세요!😊", Toast.LENGTH_SHORT).show()
                 }
-                it.findNavController().navigate(R.id.nav_home)
+                categoryRecyclerViewAdapter.selectedCategoryId == -1 -> {
+                    Toast.makeText(context, "카테고리를 설정해주세요!😊", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    val todoData = ToDoData(null, false, label, date, categoryRecyclerViewAdapter.selectedCategoryId)
+                    CoroutineScope(Dispatchers.Default).launch {
+                        postApi(todoData)
+                    }
+
+                }
             }
         }
 
         btnCancel.setOnClickListener {
-            it.findNavController().navigate(R.id.nav_home)
+            findNavController().popBackStack(R.id.nav_home, true)
+            findNavController().navigate(R.id.nav_home)
         }
 
         textViewAddCategory.setOnClickListener {
-            it.findNavController().navigate(R.id.nav_add_category)
+            findNavController().popBackStack()
+            findNavController().navigate(R.id.nav_add_category)
         }
 
         btnModifyToDo.setOnClickListener {
@@ -119,7 +129,6 @@ class AddTodoFragment :androidx.fragment.app.Fragment() {
             CoroutineScope(Dispatchers.Default).launch {
                 patchApi(todoData)
             }
-            it.findNavController().navigate(R.id.nav_home)
         }
     }
 
@@ -139,6 +148,8 @@ class AddTodoFragment :androidx.fragment.app.Fragment() {
                             sqlite.patchTodoDB(todoData)
                         }
                         Toast.makeText(context, "수정이 완료되었습니다!🤗", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack(R.id.nav_home, true)
+                        findNavController().navigate(R.id.nav_home)
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
@@ -169,6 +180,8 @@ class AddTodoFragment :androidx.fragment.app.Fragment() {
                             sqlite.addTodoDB(response.body()!!.todo)
                         }
                         Toast.makeText(context, "투두가 추가되었습니다!😊", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack(R.id.nav_home, true)
+                        findNavController().navigate(R.id.nav_home)
                     }else{
                         if(response.code() in 400..500){
                             val jObjectError = JSONObject(response.errorBody()!!.charStream().readText())
