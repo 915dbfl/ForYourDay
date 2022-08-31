@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/text_add_todo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:gravity="center"
             android:text="클릭을 통해 일정을 추가해보세요!"
             android:textStyle="bold"

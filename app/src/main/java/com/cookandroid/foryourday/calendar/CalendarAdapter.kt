@@ -118,6 +118,7 @@ class CalendarAdapter(private val context: Context, private val days: ArrayList<
                     data = pieData
                     setCenterTextTypeface(Typeface.DEFAULT_BOLD)
                     centerText = day.toString()
+                    contentDescription = date.toString()
                     description.isEnabled = false
                     setUsePercentValues(true)
                     isRotationEnabled = false

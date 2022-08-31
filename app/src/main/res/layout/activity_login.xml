@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#EEEBEB"
+    android:background="@color/rectangle_layout"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_width="match_parent"
@@ -14,19 +14,22 @@
     <com.navercorp.nid.oauth.view.NidOAuthLoginButton
         android:layout_marginTop="20dp"
         android:id="@+id/buttonOAuthLoginImg"
-        android:layout_width="wrap_content"
+        android:contentDescription="naver login button"
+        android:layout_width="235dp"
         android:layout_height="50dp"/>
 
     <com.google.android.gms.common.SignInButton
         android:layout_marginTop="10dp"
         android:layout_width="235dp"
+        android:contentDescription="google login button"
         android:layout_height="wrap_content"
         android:id="@+id/buttonGoogleOAuth"/>
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/text_color"
         android:text="처음이신가요?"
         android:textStyle="bold"
         android:id="@+id/text_sign_up"/>

@@ -8,7 +8,7 @@
     android:paddingEnd="0dp"
     android:gravity="center_vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="48dp">
     <TextView
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -57,7 +57,7 @@
         android:contentDescription="set_main"
         android:id="@+id/img_check_main"
         android:visibility="invisible"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_home_24"

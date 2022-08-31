@@ -215,7 +215,7 @@
                     android:backgroundTint="@color/rectangle_layout"
                     android:text="수정"
                     android:layout_marginEnd="20dp"
-                    android:textColor="@color/black"
+                    android:textColor="#373636"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -225,7 +225,7 @@
                     android:backgroundTint="@color/rectangle_layout"
                     android:background="@drawable/rectangle_layout"
                     android:text="취소"
-                    android:textColor="@color/black"
+                    android:textColor="#373636"
                     android:textStyle="bold" />
 
             </LinearLayout>

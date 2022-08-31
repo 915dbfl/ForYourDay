@@ -84,6 +84,7 @@ class TodoDetailDialog(private val context: Context, private val view: View) {
                     if(response.isSuccessful) {
                         deleteDB(data.id)
                         calendarViewModel.updateDate(Date(data.date))
+                        calendarViewModel.updateCalendar()
                         Toast.makeText(context, "삭제가 완료되었습니다!🙌", Toast.LENGTH_SHORT).show()
                     }else{
                         if(response.code() in 400..500){

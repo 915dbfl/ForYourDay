@@ -50,6 +50,7 @@
             android:backgroundTint="@color/white"
             android:layout_marginEnd="10dp"
             android:id="@+id/btn_user_name_modify_cancel"
+            android:textColor="#373636"
             android:text="취소"/>
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
@@ -57,6 +58,7 @@
             android:background="@drawable/rectangle_layout"
             android:backgroundTint="@color/white"
             android:text="수정"
+            android:textColor="#373636"
             android:id="@+id/btn_user_name_modify"/>
     </LinearLayout>
 </LinearLayout>

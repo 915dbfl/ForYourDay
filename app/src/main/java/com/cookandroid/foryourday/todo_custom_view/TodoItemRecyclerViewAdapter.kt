@@ -10,6 +10,7 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.foryourday.R
 import com.cookandroid.foryourday.calendar.CalendarViewModel
@@ -35,6 +36,7 @@ class TodoItemRecyclerViewAdapter(private val parentViewHolderTodo: TodoCategory
         val textView: TextView = view.findViewById(R.id.todo_item_content)
         val categoryColor: LinearLayout = view.findViewById(R.id.category_color)
         val todoCheckbox: CheckBox = view.findViewById(R.id.todo_item_checkbox)
+        val layoutTodo: ConstraintLayout = view.findViewById(R.id.layout_to_do)
     }
 
 
@@ -74,7 +76,7 @@ class TodoItemRecyclerViewAdapter(private val parentViewHolderTodo: TodoCategory
             }
         }
 
-        holder.textView.setOnClickListener {
+        holder.layoutTodo.setOnClickListener {
             val dlg = TodoDetailDialog(context, it)
             dlg.setCalendarViewModel(calendarViewModel)
             dlg.start(dataSet[position], category, categoryVal)

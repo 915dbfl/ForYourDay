@@ -56,7 +56,7 @@
                 android:backgroundTint="@color/rectangle_layout"
                 android:background="@drawable/rectangle_layout"
                 android:text="삭제"
-                android:textColor="@color/black"
+                android:textColor="#373636"
                 android:textStyle="bold" />
             <androidx.appcompat.widget.AppCompatButton
                 android:visibility="gone"
@@ -88,7 +88,7 @@
                 android:background="@drawable/rectangle_layout"
                 android:layout_marginEnd="20dp"
                 android:text="추가"
-                android:textColor="@color/black"
+                android:textColor="#373636"
                 android:textStyle="bold" />
         </LinearLayout>
         <LinearLayout
@@ -200,7 +200,7 @@
                     android:backgroundTint="@color/rectangle_layout"
                     android:background="@drawable/rectangle_layout"
                     android:text="생성"
-                    android:textColor="@color/black"
+                    android:textColor="#373636"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>

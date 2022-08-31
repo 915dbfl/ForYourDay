@@ -12,4 +12,5 @@
     <color name="category_important">#E29393</color>
     <color name="category_routine">#73A075</color>
     <color name="rectangle_layout">#EEEBEB</color>
+    <color name="text_color">#686666</color>
 </resources>

@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:text="D - 1"
+        android:textColor="@color/text_color"
         android:id="@+id/d_day_amount"
         android:textStyle="bold"/>
     <TextView

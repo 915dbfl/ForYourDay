@@ -20,29 +20,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:textColor="@color/text_color"
             android:text="category"/>
         <TextView
-            android:layout_marginStart="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🙌"/>
+            android:layout_marginStart="5dp"
+            android:text="🙌"
+            android:textColor="@color/text_color" />
         <TextView
             android:layout_marginStart="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
+            android:textColor="@color/text_color"
             android:textStyle="bold"
             android:id="@+id/task_completed"/>
         <TextView
             android:layout_marginStart="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
             android:text="📃"/>
         <TextView
             android:layout_marginStart="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
+            android:textColor="@color/text_color"
             android:textStyle="bold"
             android:id="@+id/task_todo"/>
     </LinearLayout>
