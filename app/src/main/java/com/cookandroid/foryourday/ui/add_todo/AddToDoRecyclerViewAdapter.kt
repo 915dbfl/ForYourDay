@@ -37,6 +37,7 @@ class AddToDoRecyclerViewAdapter(private val dataSet: List<CategoryData>)
         val title = dataSet[position].title
         val value = dataSet[position].value
         holder.textView.text = title
+        holder.radioButton.contentDescription = "category_$position"
         holder.categoryColor.setBackgroundColor(Color.parseColor(value))
         holder.radioButton.isChecked = dataSet[position].id == selectedCategoryId
     }

@@ -12,11 +12,13 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:layout_marginBottom="10dp"
+        android:textColor="@color/text_color"
         android:text="🖐️잠시만요!"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@color/text_color"
         android:text="@string/category_delete_message"/>
 
     <LinearLayout

@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="🔧 사용자 이미지 변경"
+        android:textColor="@color/text_color"
         android:layout_marginBottom="15dp"/>
     <androidx.cardview.widget.CardView
         android:layout_width="90dp"
@@ -36,7 +37,7 @@
         android:layout_marginTop="10dp">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:background="@drawable/rectangle_layout"
             android:text="이미지 변경"
             android:gravity="center"
@@ -45,7 +46,7 @@
             android:id="@+id/select_user_img"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginTop="10dp"
             android:text="원본 이미지"
             android:textColor="#373636"

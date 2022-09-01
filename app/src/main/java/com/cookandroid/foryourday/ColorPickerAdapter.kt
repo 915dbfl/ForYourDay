@@ -49,7 +49,7 @@ class ColorPickerAdapter(private val colors: List<String>): RecyclerView.Adapter
 
         fun bind(position: Int){
             val color = getItem(position)
-
+            view.contentDescription = "color_picker_$position"
             view.tag = position
 
             ColorViewBinding.setBackgroundColor(colorView, color)

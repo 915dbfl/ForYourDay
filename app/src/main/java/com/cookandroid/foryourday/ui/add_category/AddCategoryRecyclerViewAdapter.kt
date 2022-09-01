@@ -17,7 +17,6 @@ class AddCategoryRecyclerViewAdapter(private var dataSet: List<CategoryData>, pr
         val textView: TextView = view.findViewById(R.id.todo_item_content)
         val categoryColor: LinearLayout = view.findViewById(R.id.category_color)
         val categoryCheckBox: CheckBox = view.findViewById(R.id.todo_item_checkbox)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,6 +26,7 @@ class AddCategoryRecyclerViewAdapter(private var dataSet: List<CategoryData>, pr
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.categoryCheckBox.contentDescription = "category_checkbox_$position"
         if (!delete){
             holder.categoryCheckBox.visibility = View.GONE
         }else{
