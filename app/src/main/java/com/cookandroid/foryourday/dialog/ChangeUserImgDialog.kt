@@ -23,9 +23,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
@@ -97,8 +97,9 @@ class ChangeUserImgDialog(private val context: Context, private val fragment: Se
                 }
             }else{
                 val file = File(userImg.tag.toString())
-                val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val multipartBody = MultipartBody.Part.createFormData("file", file.name, requestBody)
+                val tmp = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+//                val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val multipartBody = MultipartBody.Part.createFormData("file", file.name, tmp)
 
                 ImgApiInterface.create().postImage(multipartBody).enqueue(
                     object : retrofit2.Callback<ImageData>{

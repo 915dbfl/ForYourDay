@@ -53,13 +53,7 @@
             android:orientation="vertical"
             android:gravity="center"
             android:id="@+id/layout_social">
-            <com.navercorp.nid.oauth.view.NidOAuthLoginButton
-                android:id="@+id/btn_naver_login"
-                android:contentDescription="naver login button"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp" />
             <com.google.android.gms.common.SignInButton
-                android:layout_marginTop="10dp"
                 android:contentDescription="google login button"
                 android:id="@+id/btn_google_login"
                 android:layout_width="235dp"

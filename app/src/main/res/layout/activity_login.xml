@@ -11,13 +11,6 @@
         android:layout_height="wrap_content"
         android:src="@drawable/logo"/>
 
-    <com.navercorp.nid.oauth.view.NidOAuthLoginButton
-        android:layout_marginTop="20dp"
-        android:id="@+id/buttonOAuthLoginImg"
-        android:contentDescription="naver login button"
-        android:layout_width="235dp"
-        android:layout_height="50dp"/>
-
     <com.google.android.gms.common.SignInButton
         android:layout_marginTop="10dp"
         android:layout_width="235dp"

@@ -16,9 +16,6 @@ import com.cookandroid.foryourday.retrofit.ApiInterface
 import com.cookandroid.foryourday.sqlite.SQLite
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.navercorp.nid.NaverIdLoginSDK
-import com.navercorp.nid.oauth.NidOAuthLogin
-import com.navercorp.nid.oauth.OAuthLoginCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,40 +36,17 @@ class DeleteUserDialog(private val context: Context, private val email: String){
         val btnCancel = dlg.findViewById<AppCompatButton>(R.id.btn_cancel)
 
         btnDelete.setOnClickListener {
-            val lst = email.split("@")
-            if(lst[1] == "naver.com"){
-                NidOAuthLogin().callDeleteTokenApi(context, object : OAuthLoginCallback {
-                    override fun onError(errorCode: Int, message: String) {
-                        onFailure(errorCode, message)
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+            val mGoogleSignInClient = GoogleSignIn.getClient(context, gso)
+            mGoogleSignInClient.revokeAccess()
+                .addOnCompleteListener{
+                    CoroutineScope(Dispatchers.Default).launch {
+                        dlg.dismiss()
+                        deleteUserApi()
                     }
-
-                    override fun onFailure(httpStatus: Int, message: String) {
-                        Log.d("callDeleteTokenApi", "errorCode: ${NaverIdLoginSDK.getLastErrorCode().code}")
-                        Log.d("callDeleteTokenApi", "errorDesc: ${NaverIdLoginSDK.getLastErrorDescription()}")
-                    }
-
-                    override fun onSuccess() {
-                        CoroutineScope(Dispatchers.Default).launch {
-                            dlg.dismiss()
-                            deleteUserApi()
-                        }
-
-                    }
-                })
-            }else{
-                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build()
-                val mGoogleSignInClient = GoogleSignIn.getClient(context, gso)
-                mGoogleSignInClient.revokeAccess()
-                    .addOnCompleteListener{
-                        CoroutineScope(Dispatchers.Default).launch {
-                            dlg.dismiss()
-                            deleteUserApi()
-                        }
-                    }
-            }
-
+                }
         }
 
         btnCancel.setOnClickListener {

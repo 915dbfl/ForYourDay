@@ -12,11 +12,6 @@ import com.cookandroid.foryourday.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.navercorp.nid.NaverIdLoginSDK
-import com.navercorp.nid.oauth.NidOAuthLogin
-import com.navercorp.nid.oauth.OAuthLoginCallback
-import com.navercorp.nid.profile.NidProfileCallback
-import com.navercorp.nid.profile.data.NidProfileResponse
 import retrofit2.Call
 import retrofit2.Response
 import com.cookandroid.foryourday.main.MainActivity
@@ -33,10 +28,6 @@ import java.io.IOException
 class LoginActivity: AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var context: Context
-
-    private lateinit var clientId: String
-    private lateinit var clientSecret: String
-    private val clientName = "ForYourDay"
 
     private lateinit var gso: GoogleSignInOptions
     private lateinit var mGoogleSignInClient: GoogleSignInClient
@@ -63,51 +54,10 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun init(){
-        clientId = BuildConfig.CLINET_ID
-        clientSecret = BuildConfig.CLIENT_SECRET
-
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(context, gso)
-
-        NaverIdLoginSDK.apply{
-            showDevelopersLog(true)
-            initialize(context, clientId, clientSecret, clientName)
-        }
-
-        binding.buttonOAuthLoginImg.setOAuthLoginCallback(object: OAuthLoginCallback{
-            override fun onError(errorCode: Int, message: String) {
-                onFailure(errorCode, message)
-            }
-
-            override fun onFailure(httpStatus: Int, message: String) {
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-                Log.d("OAuthLoginCallback", "errorCode: $errorCode")
-                Toast.makeText(context, "OAuthLoginCallback: $errorCode", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onSuccess() {
-                NidOAuthLogin().callProfileApi(object: NidProfileCallback<NidProfileResponse>{
-                    override fun onError(errorCode: Int, message: String) {
-                        onFailure(errorCode, message)
-                    }
-
-                    override fun onFailure(httpStatus: Int, message: String) {
-                        val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-                        val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                        Toast.makeText(context, "로그인 도중 오류가 발생했습니다.\n다시 시도해주세요!😔",Toast.LENGTH_SHORT).show()
-                        Log.e("naverIdLogin", "errorCode:$errorCode, errorDesc:$errorDescription")
-                    }
-
-                    override fun onSuccess(result: NidProfileResponse) {
-                        userInfo.email = result.profile!!.email
-                        checkUser()
-                    }
-                })
-            }
-        })
-
 
         binding.buttonGoogleOAuth.setOnClickListener {
             val account = GoogleSignIn.getLastSignedInAccount(this)

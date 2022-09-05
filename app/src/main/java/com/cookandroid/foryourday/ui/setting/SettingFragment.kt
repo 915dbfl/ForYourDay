@@ -7,14 +7,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.cookandroid.foryourday.BuildConfig
 import com.cookandroid.foryourday.login.LoginActivity
 import com.cookandroid.foryourday.databinding.FragmentSettingBinding
 import com.cookandroid.foryourday.dialog.ChangeUserImgDialog
@@ -23,7 +21,6 @@ import com.cookandroid.foryourday.dialog.DeleteUserDialog
 import com.cookandroid.foryourday.sqlite.SQLite
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.navercorp.nid.NaverIdLoginSDK
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,16 +47,6 @@ class SettingFragment : Fragment() {
         profileUserName = binding.profileUserName
         profileImg = binding.profileImg
 
-
-        val clientId = BuildConfig.CLINET_ID
-        val clientSecret = BuildConfig.CLIENT_SECRET
-        val clientName = "ForYourDay"
-
-        NaverIdLoginSDK.apply{
-            showDevelopersLog(true)
-            initialize(context!!, clientId, clientSecret, clientName)
-        }
-
         return binding.root
     }
 
@@ -68,7 +55,9 @@ class SettingFragment : Fragment() {
         CoroutineScope(Dispatchers.Default).launch {
             val userData = sqlite.getUserInfo().await()
             if (userData.user.imagePath == ""){
-                profileImg.setImageResource(R.drawable.ic_baseline_person_24)
+                withContext(Dispatchers.Main){
+                    profileImg.setImageResource(R.drawable.ic_baseline_person_24)
+                }
             }else{
                 withContext(Dispatchers.Main){
                     Glide.with(this@SettingFragment).load(userData.user.imagePath).error(R.drawable.ic_baseline_person_24).into(profileImg)
@@ -91,31 +80,21 @@ class SettingFragment : Fragment() {
         }
 
         binding.userLogOut.setOnClickListener {
-            val lst =  profileUserEmail.text.split("@")
             val intent = Intent(context!!, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             val sqlite1 = SQLite(context!!)
-            if(lst[1] == "naver.com"){
-                Toast.makeText(context!!, "로그아웃되었습니다!", Toast.LENGTH_SHORT).show()
-                CoroutineScope(Dispatchers.Default).launch {
-                    NaverIdLoginSDK.logout()
-                    sqlite1.deleteUser()
-                    startActivity(intent)
-                }
-            }else{
-                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build()
-                val mGoogleSignInClient = GoogleSignIn.getClient(context!!, gso)
-                mGoogleSignInClient.signOut()
-                    .addOnCompleteListener((context as MainActivity)) {
-                        Toast.makeText(context!!, "로그아웃되었습니다!", Toast.LENGTH_SHORT).show()
-                        CoroutineScope(Dispatchers.Default).launch {
-                            sqlite1.deleteUser()
-                            startActivity(intent)
-                        }
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+            val mGoogleSignInClient = GoogleSignIn.getClient(context!!, gso)
+            mGoogleSignInClient.signOut()
+                .addOnCompleteListener((context as MainActivity)) {
+                    Toast.makeText(context!!, "로그아웃되었습니다!", Toast.LENGTH_SHORT).show()
+                    CoroutineScope(Dispatchers.Default).launch {
+                        sqlite1.deleteUser()
+                        startActivity(intent)
                     }
-            }
+                }
         }
 
         binding.userDeleteAccount.setOnClickListener {
@@ -164,7 +143,6 @@ class SettingFragment : Fragment() {
         }catch(ignore: IOException){
             return null
         }
-        Log.d("절대경로 확인", file.absolutePath.toString())
         return file.absolutePath
     }
 
