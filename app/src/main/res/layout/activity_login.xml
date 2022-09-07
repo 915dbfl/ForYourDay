@@ -14,7 +14,7 @@
     <com.google.android.gms.common.SignInButton
         android:layout_marginTop="10dp"
         android:layout_width="235dp"
-        android:contentDescription="google login button"
+        android:contentDescription="google_login"
         android:layout_height="wrap_content"
         android:id="@+id/buttonGoogleOAuth"/>
 
